@@ -1,13 +1,96 @@
 <!doctype html>
-<html lang="en">
+<html class="dark" lang="es">
 <head>
   <meta charset="utf-8">
-  <title>GuepardoSport</title>
+  <title>GUEPARDO SPORT | Ropa Deportiva Premium</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Ropa deportiva de alto rendimiento. Running, Gym, Ciclismo, Fútbol y más.">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Work+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <!-- Material Symbols Outlined -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  <!-- Tailwind CSS con configuración personalizada -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            bg:         '#0D0D0D',
+            surface:    '#181818',
+            'surface-2':'#222222',
+            ink:        '#F2EDE8',
+            'ink-2':    '#8C877F',
+            brand:      '#B87333',
+            'brand-2':  '#7A5C2E',
+            verde:      '#5E8A6E',
+            rojo:       '#C0392B',
+          },
+          fontFamily: {
+            headline: ["'Barlow Condensed'", 'sans-serif'],
+            body:     ["'Work Sans'",        'sans-serif'],
+            label:    ["'Space Mono'",       'monospace'],
+          },
+          borderRadius: {
+            DEFAULT: '0.125rem',
+            sm:      '0.25rem',
+            md:      '0.375rem',
+            full:    '9999px',
+          },
+          animation: {
+            'scroll-x':     'scrollX 24s linear infinite',
+            'bounce-slow':  'bounceSlow 2s ease-in-out infinite',
+          },
+          keyframes: {
+            scrollX: {
+              '0%':   { transform: 'translateX(0)' },
+              '100%': { transform: 'translateX(-50%)' },
+            },
+            bounceSlow: {
+              '0%, 100%': { transform: 'translateY(-6px)' },
+              '50%':      { transform: 'translateY(0)' },
+            },
+          },
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #0D0D0D;
+      color: #F2EDE8;
+      font-family: 'Work Sans', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      margin: 0;
+      overflow-x: hidden;
+    }
+    a { text-decoration: none; color: inherit; }
+    button { font-family: 'Work Sans', sans-serif; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #0D0D0D; }
+    ::-webkit-scrollbar-thumb { background: #222222; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #8C877F; }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      user-select: none;
+      line-height: 1;
+    }
+    @keyframes scrollX {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    @keyframes bounceSlow {
+      0%, 100% { transform: translateY(-6px); }
+      50%       { transform: translateY(0); }
+    }
+  </style>
 </head>
-<body>
+<body class="dark">
   <app-root></app-root>
 </body>
 </html>

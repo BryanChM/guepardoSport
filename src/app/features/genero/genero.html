@@ -1,0 +1,13 @@
+<section class="hero hero--genero">
+  <span class="hero__eyebrow">Colección</span>
+  <h1 class="hero__titulo">
+    {{ tituloVisible() }}{{ deporteFiltro() ? ' · ' + deporteFiltro() : '' }}
+  </h1>
+</section>
+
+<app-grid-productos
+  [prendas]="prendasFiltradas()"
+  [cargando]="cargando()"
+  [error]="error()"
+  [mensajeVacio]="'Todavía no hay productos en ' + tituloVisible() + (deporteFiltro() ? ' - ' + deporteFiltro() : '') + '.'"
+/>

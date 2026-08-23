@@ -1,0 +1,64 @@
+@if (cargando()) {
+  <p class="estado">Cargando producto...</p>
+}
+
+@if (prenda(); as p) {
+  <div class="detalle-container">
+    <div class="galeria">
+      <img [src]="imagenActual()" [alt]="p.nombre" />
+    </div>
+
+    <div class="info">
+      <h1>{{ p.nombre }}</h1>
+      <p class="precio">Q{{ p.precioConIva.toFixed(2) }}</p>
+      <p class="precio-nota">IVA incluido</p>
+      <p class="genero">{{ p.genero === 'MASCULINO' ? 'Hombre' : p.genero === 'FEMENINO' ? 'Mujer' : 'Unisex' }}</p>
+      <p class="descripcion">{{ p.descripcion }}</p>
+
+      <div class="deportes">
+        @for (deporte of p.deportes; track deporte) {
+          <span class="etiqueta">{{ deporte }}</span>
+        }
+      </div>
+
+      <h3>Color</h3>
+      <div class="opciones-color">
+        @for (color of p.colores; track color.id) {
+          <button
+            class="opcion-color"
+            [class.activo]="colorSeleccionado()?.id === color.id"
+            (click)="seleccionarColor(color)">
+            {{ color.color }}
+          </button>
+        }
+      </div>
+
+      @if (colorSeleccionado(); as color) {
+        <h3>Talla</h3>
+        <div class="opciones-talla">
+          @for (variante of color.variantes; track variante.id) {
+            <button
+              class="opcion-talla"
+              [class.activo]="varianteSeleccionada()?.id === variante.id"
+              [disabled]="variante.stock === 0"
+              (click)="seleccionarTalla(variante)">
+              {{ variante.talla }}
+              @if (variante.stock === 0) {
+                <span class="agotado">Agotado</span>
+              }
+            </button>
+          }
+        </div>
+      }
+
+      @if (varianteSeleccionada(); as v) {
+        <p class="stock-info">Disponible: {{ v.stock }} unidades</p>
+        <button class="btn-agregar" (click)="agregarAlCarrito()">
+          {{ agregadoAlCarrito() ? '✓ Agregado' : 'Agregar al carrito' }}
+        </button>
+      } @else {
+        <p class="stock-info aviso">Selecciona una talla</p>
+      }
+    </div>
+  </div>
+}

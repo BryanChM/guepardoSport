@@ -1,1 +1,184 @@
-/* You can add global styles to this file, and also import other style files */
+/* Estilos globales no-Tailwind del proyecto */
+
+/* Clases de compatibilidad con panel admin */
+.btn-primario {
+  background: #B87333;
+  color: #fff;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 2px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  display: inline-block;
+  font-family: 'Barlow Condensed', sans-serif;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  text-decoration: none;
+
+  &:hover { background: #7A5C2E; }
+  &:disabled { opacity: 0.6; cursor: not-allowed; }
+}
+
+.btn-secundario {
+  background: none;
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #8C877F;
+  border-radius: 2px;
+  padding: 9px 16px;
+  cursor: pointer;
+  font-size: 14px;
+
+  &:hover { border-color: #B87333; color: #B87333; }
+}
+
+.estado { color: #8C877F; }
+.estado--error { color: #C0392B; }
+
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+  background: #181818;
+  border-radius: 2px;
+  overflow: hidden;
+
+  th, td {
+    text-align: left;
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    font-size: 14px;
+  }
+
+  th {
+    color: #8C877F;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-family: 'Space Mono', monospace;
+  }
+}
+
+.mono { font-family: 'Space Mono', monospace; color: #B87333; }
+
+.badge {
+  background: #222222;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  display: inline-block;
+}
+
+.badge--pagado  { color: #5E8A6E; border: 1px solid #5E8A6E; background: rgba(94,138,110,0.12); }
+.badge--pendiente { color: #B87333; border: 1px solid #B87333; background: rgba(184,115,51,0.12); }
+.badge--cancelado { color: #C0392B; border: 1px solid #C0392B; background: rgba(192,57,43,0.12); }
+
+.acciones {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+
+  a, button {
+    color: #B87333;
+    text-decoration: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    font-size: 13px;
+    font-family: 'Work Sans', sans-serif;
+  }
+
+  button.peligro { color: #C0392B; }
+}
+
+.admin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+
+  h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 28px;
+    text-transform: uppercase;
+    margin: 0;
+  }
+}
+
+.admin-nav {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 28px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  padding-bottom: 12px;
+
+  a {
+    color: #8C877F;
+    text-decoration: none;
+    font-size: 14px;
+    padding: 6px 14px;
+    border-radius: 2px;
+
+    &:hover { color: #F2EDE8; background: rgba(255,255,255,0.04); }
+    &.activo { color: #B87333; background: rgba(184,115,51,0.12); font-weight: 600; }
+  }
+}
+
+.tarjeta-form {
+  background: #181818;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 2px;
+  padding: 24px;
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 560px;
+
+  h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 18px;
+    text-transform: uppercase;
+    margin: 0;
+  }
+}
+
+.tarjeta-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  color: #8C877F;
+}
+
+.tarjeta-form input,
+.tarjeta-form textarea,
+.tarjeta-form select {
+  background: #222222;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 2px;
+  padding: 10px 12px;
+  color: #F2EDE8;
+  font-size: 14px;
+  font-family: 'Work Sans', sans-serif;
+
+  &:focus { outline: none; border-color: #B87333; }
+}
+
+.fila-form { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+.error {
+  background: rgba(192,57,43,0.12);
+  color: #C0392B;
+  padding: 10px 14px;
+  border-radius: 2px;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+/* Material Symbols */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  user-select: none;
+  line-height: 1;
+}

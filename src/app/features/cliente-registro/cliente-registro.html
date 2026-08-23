@@ -1,0 +1,17 @@
+<div class="login-container">
+  <form class="login-card" (ngSubmit)="onSubmit()">
+    <span class="mancha mancha--brand" aria-hidden="true"></span>
+    <h1>Crear cuenta</h1>
+    <p class="subtitulo">Guepardo Sport</p>
+
+    <label>Nombre <input type="text" name="nombre" [(ngModel)]="nombre" required /></label>
+    <label>Correo <input type="email" name="correo" [(ngModel)]="correo" required /></label>
+    <label>Contraseña <input type="password" name="password" [(ngModel)]="password" required /></label>
+
+    @if (error()) { <p class="error">{{ error() }}</p> }
+
+    <button type="submit" [disabled]="cargando()">{{ cargando() ? 'Creando...' : 'Crear cuenta' }}</button>
+
+    <a routerLink="/login" class="link-secundario">¿Ya tienes cuenta? Inicia sesión</a>
+  </form>
+</div>

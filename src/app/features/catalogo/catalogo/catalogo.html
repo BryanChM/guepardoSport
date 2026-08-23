@@ -1,0 +1,82 @@
+<!-- ══ HERO (pantalla completa) ══════════════════════════════════ -->
+<section class="relative h-[90vh] min-h-[580px] w-full flex items-end overflow-hidden">
+
+  <!-- Imagen de fondo -->
+  @for (img of bannerService.imagenesHero(); track img.id; let i = $index) {
+    <div class="absolute inset-0 bg-cover bg-center transition-opacity duration-1000"
+         [class.opacity-100]="indiceImagenActual() === i"
+         [class.opacity-0]="indiceImagenActual() !== i"
+         [style.background-image]="'url(' + img.url + ')'">
+    </div>
+  }
+
+  <!-- Gradiente izquierda para legibilidad -->
+  <div class="absolute inset-0 bg-gradient-to-r from-[#0D0D0D]/90 via-[#0D0D0D]/60 to-transparent"></div>
+  <div class="absolute inset-0 bg-gradient-to-t from-[#0D0D0D]/80 via-transparent to-transparent"></div>
+
+  <!-- Contenido -->
+  <div class="relative z-10 w-full max-w-[1440px] mx-auto px-8 pb-20 md:pb-28 flex flex-col items-start gap-6">
+
+    <!-- Eyebrow pill -->
+    <div class="bg-brand/15 border border-brand/40 text-brand px-5 py-2 rounded-full font-label text-xs font-bold uppercase tracking-[0.15em] backdrop-blur-sm">
+      NUEVA COLECCIÓN 2026
+    </div>
+
+    <!-- Titular enorme -->
+    <h1 class="font-headline font-black text-[clamp(56px,9vw,120px)] leading-[0.88] text-white uppercase tracking-tight drop-shadow-2xl">
+      ROPA QUE TE<br>
+      HACE MÁS<br>
+      <span class="text-brand">RÁPIDO</span>
+    </h1>
+
+    <!-- Subtítulo -->
+    <p class="font-body text-lg md:text-xl text-ink-2 max-w-md leading-relaxed">
+      {{ configuracionService.config()?.subtituloHero ?? 'Para atletas que no se detienen. Diseñada para máximo rendimiento.' }}
+    </p>
+
+    <!-- CTAs -->
+    <div class="flex flex-wrap gap-4 mt-2">
+      <a routerLink="/"
+         class="bg-brand hover:bg-brand-2 text-white px-10 py-4 font-headline text-lg font-bold uppercase tracking-wide transition-all hover:-translate-y-1 shadow-[0_4px_20px_rgba(184,115,51,0.4)]">
+        Ver Colección
+      </a>
+      <a routerLink="/genero/FEMENINO"
+         class="border border-white text-white hover:bg-white hover:text-bg px-8 py-4 font-headline text-lg font-bold uppercase tracking-wide transition-all hover:-translate-y-1 backdrop-blur-sm">
+        Ver Mujer
+      </a>
+      <a routerLink="/genero/MASCULINO"
+         class="border border-white text-white hover:bg-white hover:text-bg px-8 py-4 font-headline text-lg font-bold uppercase tracking-wide transition-all hover:-translate-y-1 backdrop-blur-sm">
+        Ver Hombre
+      </a>
+    </div>
+  </div>
+
+  <!-- Scroll indicator -->
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 opacity-50">
+    <span class="font-label text-[10px] uppercase tracking-[0.15em] text-white">Scroll</span>
+    <span class="material-symbols-outlined text-white animate-bounce">keyboard_arrow_down</span>
+  </div>
+
+</section>
+
+
+
+<!-- ══ PRODUCTOS — NUEVA LLEGADA ═══════════════════════════════ -->
+<section class="py-20 px-8 w-full max-w-[1440px] mx-auto">
+
+  <div class="flex justify-between items-end mb-10">
+    <div>
+      <h2 class="font-headline font-black text-[clamp(36px,5vw,60px)] text-ink uppercase tracking-tight mb-2">
+        LO MÁS NUEVO
+      </h2>
+      <p class="font-body text-ink-2 text-lg">Equipamiento técnico para superar tus límites.</p>
+    </div>
+    <a routerLink="/" class="hidden md:flex items-center text-brand font-headline text-lg font-bold uppercase hover:text-white transition-colors group">
+      VER TODO <span class="material-symbols-outlined ml-1 transition-transform group-hover:translate-x-1">arrow_forward</span>
+    </a>
+  </div>
+
+  <!-- Grid de productos -->
+  <app-grid-productos [prendas]="prendas()" [cargando]="cargando()" [error]="error()" />
+
+</section>

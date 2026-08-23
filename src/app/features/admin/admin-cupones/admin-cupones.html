@@ -1,0 +1,74 @@
+<app-admin-nav></app-admin-nav>
+
+<div class="admin-header">
+  <h1>Cupones</h1>
+  <button class="btn-primario" (click)="nuevoNuevo()">+ Nuevo cupón</button>
+</div>
+
+@if (mostrarForm()) {
+  <section class="tarjeta-form">
+    <h2>{{ editandoId ? 'Editar cupón' : 'Nuevo cupón' }}</h2>
+
+    @if (error()) { <p class="error">{{ error() }}</p> }
+
+    <label>Código <input type="text" [(ngModel)]="form.codigo" name="codigo" placeholder="VERANO20" /></label>
+
+    <div class="fila-form">
+      <label>
+        Tipo de descuento
+        <select [(ngModel)]="form.tipoDescuento" name="tipoDescuento">
+          <option value="PORCENTAJE">Porcentaje</option>
+          <option value="MONTO_FIJO">Monto fijo</option>
+        </select>
+      </label>
+      <label>Valor <input type="number" step="0.01" [(ngModel)]="form.valor" name="valor" /></label>
+    </div>
+
+    <label>Monto mínimo de compra (opcional) <input type="number" step="0.01" [(ngModel)]="form.montoMinimo" name="montoMinimo" /></label>
+
+    <div class="fila-form">
+      <label>Fecha inicio <input type="date" [(ngModel)]="form.fechaInicio" name="fechaInicio" /></label>
+      <label>Fecha fin <input type="date" [(ngModel)]="form.fechaFin" name="fechaFin" /></label>
+    </div>
+
+    <label>Límite de usos (opcional) <input type="number" [(ngModel)]="form.limiteUso" name="limiteUso" /></label>
+
+    <label class="fila-form" style="grid-template-columns: auto 1fr; align-items: center;">
+      <input type="checkbox" [(ngModel)]="form.activo" name="activo" style="width:auto;" />
+      Activo
+    </label>
+
+    <div class="acciones">
+      <button class="btn-primario" (click)="guardar()">Guardar</button>
+      <button class="btn-secundario" (click)="cancelar()">Cancelar</button>
+    </div>
+  </section>
+}
+
+@if (cargando()) { <p class="estado">Cargando...</p> }
+
+<table class="tabla" *ngIf="!cargando()">
+  <thead>
+  <tr>
+    <th>Código</th><th>Tipo</th><th>Valor</th><th>Vigencia</th><th>Usos</th><th>Estado</th><th></th>
+  </tr>
+  </thead>
+  <tbody>
+    @for (c of cupones(); track c.id) {
+      <tr>
+        <td class="mono">{{ c.codigo }}</td>
+        <td>{{ c.tipoDescuento === 'PORCENTAJE' ? 'Porcentaje' : 'Monto fijo' }}</td>
+        <td class="mono">{{ c.tipoDescuento === 'PORCENTAJE' ? c.valor + '%' : 'Q' + c.valor }}</td>
+        <td>{{ c.fechaInicio }} → {{ c.fechaFin }}</td>
+        <td>{{ c.usosActuales }}{{ c.limiteUso ? ' / ' + c.limiteUso : '' }}</td>
+        <td><span class="badge" [class.badge--pagado]="c.activo" [class.badge--cancelado]="!c.activo">{{ c.activo ? 'Activo' : 'Inactivo' }}</span></td>
+        <td class="acciones">
+          <button (click)="editar(c)">Editar</button>
+          <button class="peligro" (click)="eliminar(c.id, c.codigo)">Eliminar</button>
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>
+
+@if (!cargando() && cupones().length === 0) { <p class="estado">No hay cupones todavía.</p> }

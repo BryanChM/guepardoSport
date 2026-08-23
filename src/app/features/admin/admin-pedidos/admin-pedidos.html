@@ -1,0 +1,71 @@
+<app-admin-nav></app-admin-nav>
+
+<div class="admin-header">
+  <h1>Pedidos</h1>
+</div>
+
+@if (cargando()) { <p class="estado">Cargando...</p> }
+
+<table class="tabla" *ngIf="!cargando()">
+  <thead>
+  <tr>
+    <th>#</th><th>Cliente</th><th>Total</th><th>Pago</th><th>Estado</th><th>Rastreo</th><th></th>
+  </tr>
+  </thead>
+  <tbody>
+    @for (p of pedidos(); track p.id) {
+      <tr>
+        <td class="mono">#{{ p.id }}</td>
+        <td>{{ p.nombreContacto }}</td>
+        <td class="mono">Q{{ p.total.toFixed(2) }}</td>
+        <td>
+          <span class="badge" [class.badge--pagado]="p.estadoPago === 'PAGADO'" [class.badge--pendiente]="p.estadoPago !== 'PAGADO'">
+            {{ p.estadoPago }}
+          </span>
+        </td>
+        <td>
+          <select [ngModel]="p.estadoLogistico" (ngModelChange)="cambiarEstado(p.id, $event)">
+            @for (e of estadosLogisticos; track e) {
+              <option [value]="e">{{ e }}</option>
+            }
+          </select>
+        </td>
+        <td>{{ p.numeroRastreo || '—' }}</td>
+        <td class="acciones">
+          @if (p.estadoPago !== 'PAGADO') {
+            <button (click)="marcarPagado(p.id)">Marcar pagado</button>
+          }
+          <button (click)="toggleExpandir(p.id)">{{ expandidoId === p.id ? 'Cerrar' : 'Detalle' }}</button>
+        </td>
+      </tr>
+
+      @if (expandidoId === p.id) {
+        <tr>
+          <td colspan="7">
+            <div class="detalle-pedido">
+              <div class="detalle-pedido__items">
+                <strong>Productos:</strong>
+                <ul>
+                  @for (d of p.detalles; track d.prenda + d.talla) {
+                    <li>{{ d.prenda }} — {{ d.color }}, talla {{ d.talla }} × {{ d.cantidad }} — Q{{ (d.precioUnitario * d.cantidad).toFixed(2) }} (IVA: Q{{ d.ivaLinea.toFixed(2) }})</li>
+                  }
+                </ul>
+                <p>Dirección: {{ p.direccionEnvio }}</p>
+                <p>Método de pago: {{ p.metodoPago }}</p>
+              </div>
+
+              <div class="detalle-pedido__rastreo">
+                <strong>Número de rastreo</strong>
+                <input type="text" [(ngModel)]="formRastreo[p.id].empresaMensajeria" placeholder="Empresa (Cargo Expreso, Guatex...)" />
+                <input type="text" [(ngModel)]="formRastreo[p.id].numeroRastreo" placeholder="Número de guía" />
+                <button class="btn-primario" (click)="guardarRastreo(p.id)">Guardar rastreo</button>
+              </div>
+            </div>
+          </td>
+        </tr>
+      }
+    }
+  </tbody>
+</table>
+
+@if (!cargando() && pedidos().length === 0) { <p class="estado">No hay pedidos todavía.</p> }

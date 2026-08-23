@@ -1,0 +1,16 @@
+/* El shell ahora usa Tailwind — este archivo es el mínimo necesario */
+
+/* Asegura que el router-outlet no cause layout issues */
+:host { display: block; }
+
+/* Animación del ticker */
+@keyframes scroll-x {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Fuentes locales para Material Symbols */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  user-select: none;
+}

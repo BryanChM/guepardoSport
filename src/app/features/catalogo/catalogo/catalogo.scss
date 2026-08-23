@@ -1,0 +1,7 @@
+/* El catálogo usa Tailwind — estilos mínimos aquí */
+
+/* Asegura que el hero ocupe el ancho completo */
+:host {
+  display: block;
+  width: 100%;
+}

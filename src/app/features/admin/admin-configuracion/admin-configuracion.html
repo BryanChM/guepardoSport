@@ -1,0 +1,83 @@
+<app-admin-nav></app-admin-nav>
+
+<div class="admin-header">
+  <h1>Apariencia del sitio</h1>
+</div>
+
+<!-- TARJETA 1: Textos principales -->
+<section class="tarjeta-form">
+  <h2>Textos principales</h2>
+
+  @if (mensaje()) {
+    <p class="estado">{{ mensaje() }}</p>
+  }
+
+  <label>
+    Título principal (portada)
+    <input type="text" [(ngModel)]="form.tituloHero" name="tituloHero" />
+  </label>
+
+  <label>
+    Subtítulo (debajo del título)
+    <input type="text" [(ngModel)]="form.subtituloHero" name="subtituloHero" />
+  </label>
+
+  <label>
+    Texto del banner de promociones
+    <input type="text" [(ngModel)]="form.textoBanner" name="textoBanner" />
+  </label>
+
+  <label>
+    Color de marca
+    <input type="color" [(ngModel)]="form.colorMarca" name="colorMarca" style="height:42px; padding:4px;" />
+  </label>
+
+  <label>
+    URL del logo (opcional, déjalo vacío para usar el texto "Guepardo Sport")
+    <input type="text" [(ngModel)]="form.logoUrl" name="logoUrl" placeholder="https://..." />
+  </label>
+
+  <button class="btn-primario" [disabled]="guardando() || !cargado()" (click)="guardar()">
+    {{ guardando() ? 'Guardando...' : 'Guardar cambios' }}
+  </button>
+</section> <!-- CIERRE FALTANTE AGREGADO AQUÍ -->
+
+<!-- TARJETA 2: Mensajes del banner -->
+<section class="tarjeta-form">
+  <h2>Mensajes del banner</h2>
+  <div class="fila-form" style="grid-template-columns: 1fr auto;">
+    <input type="text" [(ngModel)]="nuevoMensaje" placeholder="Ej. Envío gratis en pedidos +Q500" />
+    <button class="btn-primario" (click)="agregarMensaje()">Agregar</button>
+  </div>
+  <table class="tabla">
+    <tbody>
+      @for (m of bannerService.mensajes(); track m.id) {
+        <tr>
+          <td>{{ m.texto }}</td>
+          <td class="acciones"><button class="peligro" (click)="eliminarMensaje(m.id)">Eliminar</button></td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</section>
+
+<!-- TARJETA 3: Imágenes del banner principal -->
+<section class="tarjeta-form">
+  <h2>Imágenes del banner principal (hero)</h2>
+  <label>
+    Subir imagen
+    <input type="file" accept="image/*" (change)="onArchivoHeroSeleccionado($event)" />
+  </label>
+  <button class="btn-primario" [disabled]="subiendoHero() || !archivoHero" (click)="subirImagenHero()">
+    {{ subiendoHero() ? 'Subiendo...' : 'Agregar imagen' }}
+  </button>
+
+  <div style="display:flex; flex-wrap:wrap; gap:12px; margin-top:12px;">
+    @for (img of bannerService.imagenesHero(); track img.id) {
+      <div style="position:relative;">
+        <img [src]="img.url" alt="Imagen promocional del banner" style="width:100px; height:100px; object-fit:cover; border-radius:var(--radius);" />
+        <button class="btn-quitar btn-eliminar-img" (click)="eliminarImagenHero(img.id)">×</button>
+      </div>
+    }
+  </div>
+</section>

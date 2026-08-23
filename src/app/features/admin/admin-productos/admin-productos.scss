@@ -1,0 +1,73 @@
+.admin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+
+  h1 {
+    font-family: var(--font-display);
+    font-size: 28px;
+    text-transform: uppercase;
+    margin: 0;
+  }
+}
+
+.btn-primario {
+  background: var(--brand);
+  color: #1a1200;
+  padding: 10px 18px;
+  border-radius: var(--radius);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 14px;
+
+  &:hover { background: var(--brand-dark); }
+}
+
+.estado { color: var(--ink-soft); }
+
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--surface);
+  border-radius: var(--radius);
+  overflow: hidden;
+
+  th, td {
+    text-align: left;
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    font-size: 14px;
+  }
+
+  th {
+    color: var(--ink-soft);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+}
+
+.mono { font-family: var(--font-mono); color: var(--brand); }
+
+.badge {
+  background: var(--surface-alt);
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+}
+
+.acciones {
+  display: flex;
+  gap: 12px;
+
+  a { color: var(--brand); text-decoration: none; }
+  button {
+    background: none;
+    border: none;
+    color: var(--alert);
+    cursor: pointer;
+    padding: 0;
+    font-size: 14px;
+  }
+}

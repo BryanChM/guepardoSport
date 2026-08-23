@@ -1,0 +1,19 @@
+@import "tailwindcss";
+@source "../src/**/*.html";
+@source "../src/**/*.ts";
+
+@theme {
+  --color-bg: #0D0D0D;
+  --color-surface: #181818;
+  --color-surface-2: #222222;
+  --color-ink: #F2EDE8;
+  --color-ink-2: #8C877F;
+  --color-brand: #B87333;
+  --color-brand-2: #7A5C2E;
+  --color-verde: #5E8A6E;
+  --color-rojo: #C0392B;
+
+  --font-family-headline: 'Barlow Condensed', sans-serif;
+  --font-family-body: 'Work Sans', sans-serif;
+  --font-family-label: 'Space Mono', monospace;
+}

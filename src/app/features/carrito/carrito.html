@@ -1,0 +1,42 @@
+<h1 class="titulo-pagina">Tu carrito</h1>
+
+@if (carritoService.items().length === 0) {
+  <div class="carrito-vacio">
+    <p>Tu carrito está vacío.</p>
+    <a routerLink="/" class="btn-primario">Ver catálogo</a>
+  </div>
+} @else {
+  <div class="carrito-layout">
+    <div class="carrito-items">
+      @for (item of carritoService.items(); track item.varianteId) {
+        <div class="item-carrito">
+          <img [src]="item.imagen" [alt]="item.nombre" />
+          <div class="item-info">
+            <h3>{{ item.nombre }}</h3>
+            <p class="item-detalle">{{ item.color }} · Talla {{ item.talla }}</p>
+            <p class="item-precio">Q{{ item.precioUnitario.toFixed(2) }}</p>
+          </div>
+          <div class="item-cantidad">
+            <button (click)="disminuir(item.varianteId, item.cantidad)">−</button>
+            <span>{{ item.cantidad }}</span>
+            <button
+              (click)="aumentar(item.varianteId, item.cantidad)"
+              [disabled]="item.cantidad >= item.stockDisponible">+</button>
+          </div>
+          <p class="item-subtotal">Q{{ (item.precioUnitario * item.cantidad).toFixed(2) }}</p>
+          <button class="item-eliminar" (click)="eliminar(item.varianteId)">×</button>
+        </div>
+      }
+    </div>
+
+    <aside class="resumen">
+      <h2>Resumen</h2>
+      <div class="resumen-linea">
+        <span>Subtotal</span>
+        <span class="mono">Q{{ carritoService.subtotal().toFixed(2) }}</span>
+      </div>
+      <p class="resumen-nota">El envío y los impuestos se calculan en el siguiente paso.</p>
+      <a routerLink="/checkout" class="btn-primario btn-checkout">Continuar a pagar</a>
+    </aside>
+  </div>
+}

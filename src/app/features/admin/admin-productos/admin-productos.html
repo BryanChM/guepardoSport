@@ -1,0 +1,41 @@
+<div class="admin-header">
+  <h1>Productos</h1>
+  <app-admin-nav></app-admin-nav>
+  <a routerLink="/admin/productos/nuevo" class="btn-primario">+ Nuevo producto</a>
+</div>
+
+@if (cargando()) {
+  <p class="estado">Cargando...</p>
+}
+
+<table class="tabla" *ngIf="!cargando()">
+  <thead>
+  <tr>
+    <th>Nombre</th>
+    <th>Precio</th>
+    <th>Deportes</th>
+    <th>Colores</th>
+    <th>Estado</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+    @for (p of prendas(); track p.id) {
+      <tr>
+        <td>{{ p.nombre }}</td>
+        <td class="mono">Q{{ p.precioBase.toFixed(2) }}</td>
+        <td>{{ p.deportes.join(', ') || '—' }}</td>
+        <td>{{ p.colores.length }}</td>
+        <td><span class="badge">{{ p.estado }}</span></td>
+        <td class="acciones">
+          <a [routerLink]="['/admin/productos', p.id]">Editar</a>
+          <button (click)="eliminar(p.id, p.nombre)">Eliminar</button>
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>
+
+@if (!cargando() && prendas().length === 0) {
+  <p class="estado">No hay productos todavía.</p>
+}

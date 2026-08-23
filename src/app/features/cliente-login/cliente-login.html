@@ -1,0 +1,17 @@
+<div class="login-container">
+  <form class="login-card" (ngSubmit)="onSubmit()">
+    <span class="mancha mancha--brand" aria-hidden="true"></span>
+    <h1>Iniciar sesión</h1>
+    <p class="subtitulo">Guepardo Sport</p>
+
+    <label>Correo <input type="email" name="correo" [(ngModel)]="correo" required /></label>
+    <label>Contraseña <input type="password" name="password" [(ngModel)]="password" required /></label>
+
+    @if (error()) { <p class="error">{{ error() }}</p> }
+
+    <button type="submit" [disabled]="cargando()">{{ cargando() ? 'Ingresando...' : 'Ingresar' }}</button>
+
+    <a routerLink="/registro" class="link-secundario">¿No tienes cuenta? Regístrate</a>
+    <a routerLink="/recuperar-password" class="link-secundario">¿Olvidaste tu contraseña?</a>
+  </form>
+</div>

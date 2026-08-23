@@ -1,0 +1,119 @@
+.titulo-pagina {
+  font-family: var(--font-display);
+  font-size: 32px;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+
+.checkout-layout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 32px;
+  align-items: start;
+}
+
+.checkout-form { max-width: none; }
+
+.opciones-pago {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.opcion-pago {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: var(--radius);
+  padding: 12px;
+  cursor: pointer;
+  font-size: 14px;
+
+  &.activo {
+    border-color: var(--brand);
+    background: rgba(242, 162, 27, 0.1);
+  }
+
+  input { width: auto; }
+}
+
+.btn-confirmar {
+  width: 100%;
+  padding: 14px;
+  font-size: 15px;
+}
+
+.resumen {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 20px;
+  position: sticky;
+  top: 100px;
+
+  h2 {
+    font-family: var(--font-display);
+    font-size: 18px;
+    text-transform: uppercase;
+    margin: 0 0 16px;
+  }
+}
+
+.resumen-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin-bottom: 8px;
+}
+
+.resumen-divisor {
+  border-top: 1px solid rgba(255,255,255,0.08);
+  margin: 12px 0;
+}
+
+.resumen-linea {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.resumen-total {
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--ink);
+}
+
+.resumen-nota {
+  font-size: 11px;
+  color: var(--ink-soft);
+  margin-top: 12px;
+}
+
+.mono { font-family: var(--font-mono); }
+
+.carrito-vacio {
+  text-align: center;
+  padding: 60px 0;
+  color: var(--ink-soft);
+  p { margin-bottom: 16px; }
+}
+
+.confirmacion {
+  text-align: center;
+  padding: 60px 0;
+  max-width: 400px;
+  margin: 0 auto;
+
+  h1 {
+    font-family: var(--font-display);
+    font-size: 28px;
+    text-transform: uppercase;
+    margin: 16px 0 24px;
+  }
+
+  p { margin-bottom: 8px; color: var(--ink-soft); }
+  .nota { font-size: 13px; margin: 16px 0 24px; }
+}

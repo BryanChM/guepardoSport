@@ -1,0 +1,115 @@
+.estado { color: var(--ink-soft); padding: 24px 0; }
+
+.detalle-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+}
+
+.galeria img {
+  width: 100%;
+  border-radius: var(--radius);
+  aspect-ratio: 1;
+  object-fit: cover;
+  background: var(--surface);
+}
+
+h1 {
+  font-family: var(--font-display);
+  font-size: 32px;
+  text-transform: uppercase;
+  margin: 0 0 8px;
+}
+
+.precio {
+  font-family: var(--font-mono);
+  font-size: 22px;
+  font-weight: bold;
+  color: var(--brand);
+}
+
+.descripcion { color: var(--ink-soft); margin: 12px 0; }
+
+h3 {
+  font-family: var(--font-display);
+  font-size: 15px;
+  text-transform: uppercase;
+  margin: 20px 0 8px;
+  color: var(--ink-soft);
+}
+
+.deportes { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+
+.etiqueta {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  background: var(--surface-alt);
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 2px 8px;
+  border-radius: 999px;
+  color: var(--ink-soft);
+}
+
+.opciones-color, .opciones-talla {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.opcion-color, .opcion-talla {
+  padding: 8px 16px;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--ink);
+  cursor: pointer;
+
+  &.activo {
+    border-color: var(--brand);
+    background: rgba(242, 162, 27, 0.14);
+    color: var(--brand);
+    font-weight: bold;
+  }
+
+  &:disabled { opacity: 0.4; cursor: not-allowed; }
+}
+
+.agotado {
+  font-size: 10px;
+  display: block;
+  color: var(--alert);
+}
+
+.stock-info {
+  margin: 16px 0;
+  font-size: 14px;
+  color: var(--ink-soft);
+  &.aviso { color: var(--alert); }
+}
+
+.btn-agregar {
+  padding: 12px 24px;
+  background: var(--brand);
+  color: #1a1200;
+  border: none;
+  border-radius: var(--radius);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  &:hover { background: var(--brand-dark); }
+}
+.genero {
+  font-size: 13px;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 4px 0 8px;
+}
+.precio-nota {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-soft);
+  margin: 0 0 8px;
+}

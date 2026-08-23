@@ -1,0 +1,11 @@
+<section class="hero hero--categoria">
+  <span class="hero__eyebrow">Categoría</span>
+  <h1 class="hero__titulo">{{ nombreCategoria() }}</h1>
+</section>
+
+<app-grid-productos
+  [prendas]="prendasFiltradas()"
+  [cargando]="cargando()"
+  [error]="error()"
+  [mensajeVacio]="'Todavía no hay productos en ' + nombreCategoria() + '.'"
+/>

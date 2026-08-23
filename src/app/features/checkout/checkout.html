@@ -1,0 +1,81 @@
+@if (pedidoCreado(); as pedido) {
+  <div class="confirmacion">
+    <span class="mancha mancha--brand" aria-hidden="true"></span>
+    <h1>¡Pedido confirmado!</h1>
+    <p>Tu número de pedido es <strong class="mono">#{{ pedido.id }}</strong></p>
+    <p>Total pagado: <strong class="mono">Q{{ pedido.total.toFixed(2) }}</strong></p>
+    <p class="nota">Te enviamos la confirmación y la factura a tu correo.</p>
+    <button class="btn-primario" (click)="irAlCatalogo()">Seguir comprando</button>
+  </div>
+} @else {
+
+  <h1 class="titulo-pagina">Finalizar compra</h1>
+
+  @if (carritoService.items().length === 0) {
+    <div class="carrito-vacio">
+      <p>Tu carrito está vacío.</p>
+      <a routerLink="/" class="btn-primario">Ver catálogo</a>
+    </div>
+  } @else {
+
+    <div class="checkout-layout">
+      <form class="checkout-form" (ngSubmit)="confirmarPedido()">
+
+        @if (error()) { <p class="error">{{ error() }}</p> }
+
+        <section class="tarjeta-form">
+          <h2>Datos de envío</h2>
+          <label>Nombre completo <input type="text" [(ngModel)]="nombreContacto" name="nombreContacto" required /></label>
+          <label>Correo <input type="email" [(ngModel)]="correoContacto" name="correoContacto" required /></label>
+          <label>Dirección de envío <textarea [(ngModel)]="direccionEnvio" name="direccionEnvio" rows="2" required></textarea></label>
+        </section>
+
+        <section class="tarjeta-form">
+          <h2>Facturación (opcional)</h2>
+          <label>NIT <input type="text" [(ngModel)]="nit" name="nit" placeholder="CF si no tienes NIT" /></label>
+          <label>Nombre para factura <input type="text" [(ngModel)]="nombreFacturacion" name="nombreFacturacion" [placeholder]="nombreContacto" /></label>
+        </section>
+
+        <section class="tarjeta-form">
+          <h2>Método de pago</h2>
+          <div class="opciones-pago">
+            <label class="opcion-pago" [class.activo]="metodoPago === 'CONTRA_ENTREGA'">
+              <input type="radio" name="metodoPago" value="CONTRA_ENTREGA" [(ngModel)]="metodoPago" />
+              Pago contra entrega
+            </label>
+            <label class="opcion-pago" [class.activo]="metodoPago === 'EN_LINEA'">
+              <input type="radio" name="metodoPago" value="EN_LINEA" [(ngModel)]="metodoPago" />
+              Pago en línea
+            </label>
+          </div>
+        </section>
+
+        <section class="tarjeta-form">
+          <h2>Cupón de descuento</h2>
+          <label>Código <input type="text" [(ngModel)]="codigoCupon" name="codigoCupon" placeholder="Opcional" /></label>
+        </section>
+
+        <button type="submit" class="btn-primario btn-confirmar" [disabled]="enviando()">
+          {{ enviando() ? 'Procesando...' : 'Confirmar pedido' }}
+        </button>
+      </form>
+
+      <aside class="resumen">
+        <h2>Tu pedido</h2>
+        @for (item of carritoService.items(); track item.varianteId) {
+          <div class="resumen-item">
+            <span>{{ item.nombre }} ({{ item.color }}, {{ item.talla }}) × {{ item.cantidad }}</span>
+            <span class="mono">Q{{ (item.precioUnitario * item.cantidad).toFixed(2) }}</span>
+          </div>
+        }
+        <div class="resumen-divisor"></div>
+        <div class="resumen-linea"><span>Subtotal</span><span class="mono">Q{{ carritoService.subtotal().toFixed(2) }}</span></div>
+        <div class="resumen-linea"><span>Envío</span><span class="mono">{{ costoEnvio() === 0 ? 'Gratis' : 'Q' + costoEnvio().toFixed(2) }}</span></div>
+        <div class="resumen-linea"><span>IVA (12%)</span><span class="mono">Q{{ iva().toFixed(2) }}</span></div>
+        <div class="resumen-divisor"></div>
+        <div class="resumen-linea resumen-total"><span>Total</span><span class="mono">Q{{ total().toFixed(2) }}</span></div>
+        <p class="resumen-nota">El total final (con cupón aplicado si corresponde) se confirma al procesar el pedido.</p>
+      </aside>
+    </div>
+  }
+}

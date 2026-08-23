@@ -1,0 +1,111 @@
+<a routerLink="/admin/productos" class="volver">← Volver a productos</a>
+
+<h1>{{ esEdicion ? 'Editar producto' : 'Nuevo producto' }}</h1>
+
+@if (error()) {
+  <p class="error">{{ error() }}</p>
+}
+
+<section class="tarjeta-form">
+  <h2>Datos básicos</h2>
+
+  <label>
+    Nombre
+    <input type="text" [(ngModel)]="nombre" name="nombre" />
+  </label>
+
+  <label>
+    Descripción
+    <textarea [(ngModel)]="descripcion" name="descripcion" rows="3"></textarea>
+  </label>
+
+  <label>
+    Precio base (Q)
+    <input type="number" step="0.01" [(ngModel)]="precioBase" name="precioBase" />
+  </label>
+  <label>
+    Género
+    <select [(ngModel)]="genero" name="genero">
+      <option value="UNISEX">Unisex</option>
+      <option value="MASCULINO">Masculino</option>
+      <option value="FEMENINO">Femenino</option>
+    </select>
+  </label>
+
+  <div class="deportes-selector">
+    <span class="label-grupo">Deportes (puedes elegir varios)</span>
+    <div class="chips">
+      @for (d of deportesDisponibles(); track d.id) {
+        <button
+          type="button"
+          class="chip"
+          [class.chip--activo]="deportesSeleccionados.has(d.id)"
+          (click)="toggleDeporte(d.id)">
+          {{ d.nombre }}
+        </button>
+      }
+    </div>
+  </div>
+
+  <button class="btn-primario" [disabled]="guardando()" (click)="guardarDatosBasicos()">
+    {{ guardando() ? 'Guardando...' : (esEdicion ? 'Guardar cambios' : 'Crear producto') }}
+  </button>
+</section>
+
+@if (esEdicion && prendaActual(); as prenda) {
+
+  <section class="tarjeta-form">
+    <h2>Colores de este producto</h2>
+
+    @if (prenda.colores.length === 0) {
+      <p class="estado">Todavía no tiene colores agregados.</p>
+    }
+
+    @for (color of prenda.colores; track color.id) {
+      <div class="color-existente">
+        <strong>{{ color.color }}</strong>
+        <span class="estado">{{ color.imagenes.length }} imagen(es) · {{ color.variantes.length }} talla(s)</span>
+        <div class="tallas-lista">
+          @for (v of color.variantes; track v.id) {
+            <span class="badge">{{ v.talla }}: {{ v.stock }}</span>
+          }
+        </div>
+      </div>
+    }
+  </section>
+
+  <section class="tarjeta-form">
+    <h2>Agregar nuevo color</h2>
+
+    <label>
+      Nombre del color
+      <input type="text" [(ngModel)]="nuevoColor" name="nuevoColor" placeholder="Ej. Azul" />
+    </label>
+    <label>
+      Fotos del producto (puedes elegir varias)
+      <input
+        type="file"
+        accept="image/*"
+        multiple
+        (change)="onArchivosSeleccionados($event)" />
+      @if (archivosSeleccionados.length > 0) {
+        <span class="estado">{{ archivosSeleccionados.length }} imagen(es) seleccionada(s)</span>
+      }
+    </label>
+
+    <span class="label-grupo">Tallas y stock</span>
+    @for (t of nuevasTallas; track $index) {
+      <div class="fila-talla">
+        <input type="text" [(ngModel)]="t.talla" [name]="'talla' + $index" placeholder="Talla (S, M, L)" />
+        <input type="number" [(ngModel)]="t.stock" [name]="'stock' + $index" placeholder="Stock" />
+        <input type="text" [(ngModel)]="t.sku" [name]="'sku' + $index" placeholder="SKU (opcional)" />
+        <button type="button" class="btn-quitar" (click)="quitarTalla($index)">×</button>
+      </div>
+    }
+    <button type="button" class="btn-secundario" (click)="agregarTallaAlFormulario()">+ Agregar talla</button>
+
+    <button class="btn-primario" [disabled]="subiendoImagenes()" (click)="agregarColor()">
+      {{ subiendoImagenes() ? 'Subiendo imágenes...' : 'Guardar color' }}
+    </button>
+  </section>
+}

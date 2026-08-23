@@ -1,0 +1,35 @@
+.detalle-pedido {
+  background: var(--surface-alt);
+  border-radius: var(--radius);
+  padding: 16px;
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 24px;
+
+  ul { margin: 8px 0; padding-left: 18px; font-size: 13px; color: var(--ink-soft); }
+  p { font-size: 13px; color: var(--ink-soft); margin: 4px 0; }
+}
+
+.detalle-pedido__rastreo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  input {
+    background: var(--surface);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: var(--radius);
+    padding: 8px 10px;
+    color: var(--ink);
+    font-size: 13px;
+  }
+}
+
+select {
+  background: var(--surface-alt);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius);
+  padding: 6px 8px;
+  color: var(--ink);
+  font-size: 13px;
+}
