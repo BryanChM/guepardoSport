@@ -1,6 +1,7 @@
 export interface CheckoutItem {
   varianteId: number;
   cantidad: number;
+
 }
 
 export interface CheckoutRequest {
@@ -9,6 +10,7 @@ export interface CheckoutRequest {
   nombreContacto: string;
   correoContacto: string;
   direccionEnvio: string;
+
   metodoPago: 'EN_LINEA' | 'CONTRA_ENTREGA';
 }
 
@@ -36,6 +38,7 @@ export interface Pedido {
   fechaCreacion: string;
   detalles: DetallePedido[];
   numeroRastreo?: string;
+  urlPago?: string;
 }
 export interface DetallePedido {
   prenda: string;
@@ -45,3 +48,4 @@ export interface DetallePedido {
   precioUnitario: number;
   ivaLinea: number;
 }
+

@@ -98,8 +98,14 @@ export class Checkout implements OnInit {
     this.pedidoService.crear(dto).subscribe({
       next: (pedido) => {
         this.enviando.set(false);
-        this.pedidoCreado.set({ id: pedido.id, total: pedido.total });
-        this.carritoService.vaciar();
+        if (pedido.urlPago) {
+          // Pago en línea: redirige al checkout hospedado de Recurrente
+          window.location.href = pedido.urlPago;
+        } else {
+          // Contra entrega: ya está confirmado
+          this.pedidoCreado.set({ id: pedido.id, total: pedido.total });
+          this.carritoService.vaciar();
+        }
       },
       error: (err) => {
         this.enviando.set(false);

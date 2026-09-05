@@ -1,36 +1,58 @@
-<app-admin-nav></app-admin-nav>
-
-<div class="admin-header">
-  <h1>Clientes</h1>
+<div class="flex justify-between items-center mb-10">
+  <h1 class="text-4xl font-bold uppercase text-white tracking-tight">Clientes</h1>
+  <app-admin-nav></app-admin-nav>
 </div>
 
-@if (cargando()) { <p class="estado">Cargando...</p> }
+@if (cargando()) {
+  <p class="text-zinc-500 py-4 text-center font-medium animate-pulse">Cargando clientes...</p>
+}
 
-<table class="tabla" *ngIf="!cargando()">
-  <thead>
-  <tr><th>Nombre</th><th>Correo</th><th></th></tr>
-  </thead>
-  <tbody>
-    @for (c of clientes(); track c.id) {
+@if (!cargando() && clientes().length > 0) {
+  <div class="bg-zinc-900 shadow-2xl border border-zinc-800 rounded-xl overflow-hidden max-w-5xl">
+    <table class="w-full text-left border-collapse">
+      <thead class="bg-zinc-950/50 border-b border-zinc-800">
       <tr>
-        @if (editandoId === c.id) {
-          <td><input type="text" [(ngModel)]="formEdicion.nombre" /></td>
-          <td><input type="email" [(ngModel)]="formEdicion.correo" /></td>
-          <td class="acciones">
-            <button (click)="guardar(c.id)">Guardar</button>
-            <button (click)="cancelar()">Cancelar</button>
-          </td>
-        } @else {
-          <td>{{ c.nombre }}</td>
-          <td>{{ c.correo }}</td>
-          <td class="acciones">
-            <button (click)="editar(c)">Editar</button>
-            <button class="peligro" (click)="eliminar(c.id, c.nombre)">Eliminar</button>
-          </td>
-        }
+        <th class="px-6 py-5 text-xs font-bold text-zinc-400 uppercase tracking-widest">Nombre</th>
+        <th class="px-6 py-5 text-xs font-bold text-zinc-400 uppercase tracking-widest">Correo</th>
+        <th class="px-6 py-5 text-xs font-bold text-zinc-400 uppercase tracking-widest text-right">Acciones</th>
       </tr>
-    }
-  </tbody>
-</table>
+      </thead>
+      <tbody class="divide-y divide-zinc-800">
+        @for (c of clientes(); track c.id) {
+          <tr class="hover:bg-zinc-800/50 transition-colors group">
 
-@if (!cargando() && clientes().length === 0) { <p class="estado">No hay clientes registrados.</p> }
+            @if (editandoId === c.id) {
+              <td class="px-6 py-4">
+                <input type="text" [(ngModel)]="formEdicion.nombre"
+                       class="w-full border border-zinc-700 bg-zinc-950 text-white p-2 rounded focus:outline-none focus:border-white" />
+              </td>
+              <td class="px-6 py-4">
+                <input type="email" [(ngModel)]="formEdicion.correo"
+                       class="w-full border border-zinc-700 bg-zinc-950 text-white p-2 rounded focus:outline-none focus:border-white" />
+              </td>
+              <td class="px-6 py-4 flex gap-4 justify-end">
+                <button (click)="guardar(c.id)" class="text-sm font-bold text-green-500 hover:text-green-400 transition-colors">Guardar</button>
+                <button (click)="cancelar()" class="text-sm font-bold text-zinc-400 hover:text-white transition-colors">Cancelar</button>
+              </td>
+            } @else {
+              <td class="px-6 py-4 text-sm font-bold text-zinc-100">{{ c.nombre }}</td>
+              <td class="px-6 py-4 text-sm text-zinc-400">{{ c.correo }}</td>
+              <td class="px-6 py-4 flex gap-4 justify-end">
+                <button (click)="editar(c)" class="text-sm font-bold text-zinc-400 hover:text-white transition-colors">Editar</button>
+                <button class="text-sm font-bold text-red-500 hover:text-red-400 transition-colors" (click)="eliminar(c.id, c.nombre)">Eliminar</button>
+              </td>
+            }
+
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}
+
+@if (!cargando() && clientes().length === 0) {
+  <div class="text-center py-16 bg-zinc-900 rounded-xl border border-zinc-800 shadow-xl max-w-5xl">
+    <span class="material-symbols-outlined text-5xl text-zinc-700 mb-4 block">group_off</span>
+    <p class="text-zinc-400 text-lg">No hay clientes registrados.</p>
+  </div>
+}

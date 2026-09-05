@@ -3,7 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Prenda, PrendaCreateDTO } from '../models/prenda.model';
 
-const API_URL = 'http://localhost:8080/api/prendas';
+import { environment } from '../../../environments/environment';
+
+const API_URL = `${environment.apiUrl}/prendas`;
 
 @Injectable({ providedIn: 'root' })
 export class PrendaService {

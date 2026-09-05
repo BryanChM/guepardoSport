@@ -60,4 +60,8 @@ export class App {
     this.authService.logout();
     void this.router.navigate(['/']);
   }
+  carritoAbierto = signal(false);
+  toggleCarrito() {
+    this.carritoAbierto.update((val) => !val);
+  }
 }

@@ -1,83 +1,111 @@
-<app-admin-nav></app-admin-nav>
 
-<div class="admin-header">
-  <h1>Apariencia del sitio</h1>
+
+<div class="flex justify-between items-center mb-10 max-w-4xl mx-auto">
+  <h1 class="text-4xl font-bold uppercase text-white tracking-tight">Apariencia del sitio</h1>
+  <app-admin-nav></app-admin-nav>
 </div>
 
-<!-- TARJETA 1: Textos principales -->
-<section class="tarjeta-form">
-  <h2>Textos principales</h2>
+<div class="max-w-4xl mx-auto flex flex-col gap-8 pb-12">
 
-  @if (mensaje()) {
-    <p class="estado">{{ mensaje() }}</p>
-  }
+  <!-- TARJETA 1: Textos principales -->
+  <section class="bg-zinc-900 border border-zinc-800 p-8 rounded-xl shadow-2xl">
+    <h2 class="text-xl font-bold uppercase text-white mb-6 tracking-wide">Textos principales</h2>
 
-  <label>
-    Título principal (portada)
-    <input type="text" [(ngModel)]="form.tituloHero" name="tituloHero" />
-  </label>
-
-  <label>
-    Subtítulo (debajo del título)
-    <input type="text" [(ngModel)]="form.subtituloHero" name="subtituloHero" />
-  </label>
-
-  <label>
-    Texto del banner de promociones
-    <input type="text" [(ngModel)]="form.textoBanner" name="textoBanner" />
-  </label>
-
-  <label>
-    Color de marca
-    <input type="color" [(ngModel)]="form.colorMarca" name="colorMarca" style="height:42px; padding:4px;" />
-  </label>
-
-  <label>
-    URL del logo (opcional, déjalo vacío para usar el texto "Guepardo Sport")
-    <input type="text" [(ngModel)]="form.logoUrl" name="logoUrl" placeholder="https://..." />
-  </label>
-
-  <button class="btn-primario" [disabled]="guardando() || !cargado()" (click)="guardar()">
-    {{ guardando() ? 'Guardando...' : 'Guardar cambios' }}
-  </button>
-</section> <!-- CIERRE FALTANTE AGREGADO AQUÍ -->
-
-<!-- TARJETA 2: Mensajes del banner -->
-<section class="tarjeta-form">
-  <h2>Mensajes del banner</h2>
-  <div class="fila-form" style="grid-template-columns: 1fr auto;">
-    <input type="text" [(ngModel)]="nuevoMensaje" placeholder="Ej. Envío gratis en pedidos +Q500" />
-    <button class="btn-primario" (click)="agregarMensaje()">Agregar</button>
-  </div>
-  <table class="tabla">
-    <tbody>
-      @for (m of bannerService.mensajes(); track m.id) {
-        <tr>
-          <td>{{ m.texto }}</td>
-          <td class="acciones"><button class="peligro" (click)="eliminarMensaje(m.id)">Eliminar</button></td>
-        </tr>
-      }
-    </tbody>
-  </table>
-</section>
-
-<!-- TARJETA 3: Imágenes del banner principal -->
-<section class="tarjeta-form">
-  <h2>Imágenes del banner principal (hero)</h2>
-  <label>
-    Subir imagen
-    <input type="file" accept="image/*" (change)="onArchivoHeroSeleccionado($event)" />
-  </label>
-  <button class="btn-primario" [disabled]="subiendoHero() || !archivoHero" (click)="subirImagenHero()">
-    {{ subiendoHero() ? 'Subiendo...' : 'Agregar imagen' }}
-  </button>
-
-  <div style="display:flex; flex-wrap:wrap; gap:12px; margin-top:12px;">
-    @for (img of bannerService.imagenesHero(); track img.id) {
-      <div style="position:relative;">
-        <img [src]="img.url" alt="Imagen promocional del banner" style="width:100px; height:100px; object-fit:cover; border-radius:var(--radius);" />
-        <button class="btn-quitar btn-eliminar-img" (click)="eliminarImagenHero(img.id)">×</button>
+    @if (mensaje()) {
+      <div class="bg-zinc-800 text-zinc-200 p-3 mb-6 text-sm font-medium border border-zinc-700 text-center rounded-md">
+        {{ mensaje() }}
       </div>
     }
-  </div>
-</section>
+
+    <div class="flex flex-col gap-5">
+      <label class="flex flex-col gap-2 text-xs font-bold text-zinc-400 uppercase tracking-wider">
+        Título principal (portada)
+        <input type="text" [(ngModel)]="form.tituloHero" name="tituloHero"
+               class="w-full border border-zinc-700 bg-zinc-950 text-white p-3 rounded-md focus:outline-none focus:border-white transition-all font-normal normal-case" />
+      </label>
+
+      <label class="flex flex-col gap-2 text-xs font-bold text-zinc-400 uppercase tracking-wider">
+        Subtítulo (debajo del título)
+        <input type="text" [(ngModel)]="form.subtituloHero" name="subtituloHero"
+               class="w-full border border-zinc-700 bg-zinc-950 text-white p-3 rounded-md focus:outline-none focus:border-white transition-all font-normal normal-case" />
+      </label>
+
+      <label class="flex flex-col gap-2 text-xs font-bold text-zinc-400 uppercase tracking-wider">
+        Texto del banner de promociones
+        <input type="text" [(ngModel)]="form.textoBanner" name="textoBanner"
+               class="w-full border border-zinc-700 bg-zinc-950 text-white p-3 rounded-md focus:outline-none focus:border-white transition-all font-normal normal-case" />
+      </label>
+
+      <label class="flex flex-col gap-2 text-xs font-bold text-zinc-400 uppercase tracking-wider">
+        Color de marca
+        <input type="color" [(ngModel)]="form.colorMarca" name="colorMarca"
+               class="w-full h-12 bg-zinc-950 border border-zinc-700 rounded-md p-1 cursor-pointer" />
+      </label>
+
+      <label class="flex flex-col gap-2 text-xs font-bold text-zinc-400 uppercase tracking-wider">
+        URL del logo (opcional, déjalo vacío para usar el texto "Guepardo Sport")
+        <input type="text" [(ngModel)]="form.logoUrl" name="logoUrl" placeholder="https://..."
+               class="w-full border border-zinc-700 bg-zinc-950 text-white placeholder-zinc-600 p-3 rounded-md focus:outline-none focus:border-white transition-all font-normal normal-case" />
+      </label>
+
+      <button class="w-full bg-white text-black font-bold uppercase tracking-widest py-4 mt-2 rounded-md hover:bg-zinc-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              [disabled]="guardando() || !cargado()" (click)="guardar()">
+        {{ guardando() ? 'Guardando...' : 'Guardar cambios' }}
+      </button>
+    </div>
+  </section>
+
+  <!-- TARJETA 2: Mensajes del banner -->
+  <section class="bg-zinc-900 border border-zinc-800 p-8 rounded-xl shadow-2xl">
+    <h2 class="text-xl font-bold uppercase text-white mb-6 tracking-wide">Mensajes del banner</h2>
+
+    <div class="flex gap-4 mb-6">
+      <input type="text" [(ngModel)]="nuevoMensaje" placeholder="Ej. Envío gratis en pedidos +Q500"
+             class="flex-1 border border-zinc-700 bg-zinc-950 text-white placeholder-zinc-600 p-3 rounded-md focus:outline-none focus:border-white transition-all" />
+      <button class="bg-white text-black px-6 py-3 font-bold uppercase tracking-widest rounded-md hover:bg-zinc-200 transition-colors" (click)="agregarMensaje()">Agregar</button>
+    </div>
+
+    <div class="border border-zinc-800 rounded-lg overflow-hidden bg-zinc-950/50">
+      <table class="w-full text-left border-collapse">
+        <tbody class="divide-y divide-zinc-800">
+          @for (m of bannerService.mensajes(); track m.id) {
+            <tr class="hover:bg-zinc-800/40 transition-colors">
+              <td class="px-6 py-4 text-sm text-zinc-200">{{ m.texto }}</td>
+              <td class="px-6 py-4 text-right">
+                <button class="text-sm font-bold text-red-500 hover:text-red-400 transition-colors" (click)="eliminarMensaje(m.id)">Eliminar</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- TARJETA 3: Imágenes del banner principal -->
+  <section class="bg-zinc-900 border border-zinc-800 p-8 rounded-xl shadow-2xl">
+    <h2 class="text-xl font-bold uppercase text-white mb-6 tracking-wide">Imágenes del banner principal (hero)</h2>
+
+    <div class="flex flex-col gap-4 mb-6">
+      <label class="flex flex-col gap-2 text-xs font-bold text-zinc-400 uppercase tracking-wider">
+        Subir imagen
+        <input type="file" accept="image/*" (change)="onArchivoHeroSeleccionado($event)"
+               class="w-full border border-zinc-700 bg-zinc-950 text-zinc-300 p-3 rounded-md file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-xs file:font-bold file:bg-zinc-800 file:text-white hover:file:bg-zinc-700 cursor-pointer" />
+      </label>
+
+      <button class="bg-zinc-800 text-white font-bold uppercase tracking-widest py-3 rounded-md hover:bg-zinc-700 transition-colors border border-zinc-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              [disabled]="subiendoHero() || !archivoHero" (click)="subirImagenHero()">
+        {{ subiendoHero() ? 'Subiendo...' : 'Agregar imagen' }}
+      </button>
+    </div>
+
+    <div class="flex flex-wrap gap-4 mt-6">
+      @for (img of bannerService.imagenesHero(); track img.id) {
+        <div class="relative group">
+          <img [src]="img.url" alt="Imagen promocional del banner" class="w-24 h-24 object-cover rounded-md border border-zinc-700 shadow-md" />
+          <button class="absolute -top-2 -right-2 bg-red-600 text-white w-6 h-6 rounded-full flex items-center justify-center font-bold text-xs shadow-lg hover:bg-red-700 transition-colors" (click)="eliminarImagenHero(img.id)">×</button>
+        </div>
+      }
+    </div>
+  </section>
+
+</div>

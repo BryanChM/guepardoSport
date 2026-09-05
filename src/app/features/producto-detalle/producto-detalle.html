@@ -1,63 +1,78 @@
 @if (cargando()) {
-  <p class="estado">Cargando producto...</p>
+  <p class="text-ink-2 py-8 px-8 text-center animate-pulse">Cargando producto...</p>
 }
 
-@if (prenda(); as p) {
-  <div class="detalle-container">
-    <div class="galeria">
-      <img [src]="imagenActual()" [alt]="p.nombre" />
+@if (!cargando() && prenda()) {
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-300 mx-auto px-8 py-10">
+
+    <!-- Imagen del producto -->
+    <div class="bg-surface aspect-square overflow-hidden">
+      <img [src]="imagenActual()" [alt]="prenda()!.nombre" class="w-full h-full object-cover" />
     </div>
 
-    <div class="info">
-      <h1>{{ p.nombre }}</h1>
-      <p class="precio">Q{{ p.precioConIva.toFixed(2) }}</p>
-      <p class="precio-nota">IVA incluido</p>
-      <p class="genero">{{ p.genero === 'MASCULINO' ? 'Hombre' : p.genero === 'FEMENINO' ? 'Mujer' : 'Unisex' }}</p>
-      <p class="descripcion">{{ p.descripcion }}</p>
+    <!-- Detalles -->
+    <div>
+      <h1 class="font-headline text-4xl font-bold uppercase text-ink tracking-tight">{{ prenda()!.nombre }}</h1>
+      <p class="text-3xl font-bold text-ink mt-2 font-mono">Q{{ prenda()!.precioConIva.toFixed(2) }}</p>
+      <p class="text-xs text-ink-2 uppercase tracking-widest mt-1">IVA incluido</p>
+      <p class="text-sm text-ink-2 uppercase tracking-wide mt-4">
+        {{ prenda()!.genero === 'MASCULINO' ? 'Hombre' : prenda()!.genero === 'FEMENINO' ? 'Mujer' : 'Unisex' }}
+      </p>
+      <p class="text-ink-2 mt-6 leading-relaxed">{{ prenda()!.descripcion }}</p>
 
-      <div class="deportes">
-        @for (deporte of p.deportes; track deporte) {
-          <span class="etiqueta">{{ deporte }}</span>
+      <div class="flex flex-wrap gap-2 mt-6">
+        @for (deporte of prenda()!.deportes; track deporte) {
+          <span class="text-xs font-bold uppercase tracking-widest text-ink-2 border border-border px-3 py-1">{{ deporte }}</span>
         }
       </div>
 
-      <h3>Color</h3>
-      <div class="opciones-color">
-        @for (color of p.colores; track color.id) {
+      <!-- Selector de Color -->
+      <h3 class="text-xs font-bold uppercase tracking-widest text-ink mt-10 mb-3">Color</h3>
+      <div class="flex flex-wrap gap-3">
+        @for (color of prenda()!.colores; track color.id) {
           <button
-            class="opcion-color"
-            [class.activo]="colorSeleccionado()?.id === color.id"
+            class="px-5 py-2 border text-sm uppercase font-bold tracking-wider transition-all"
+            [class.border-ink]="colorSeleccionado()?.id === color.id"
+            [class.text-ink]="colorSeleccionado()?.id === color.id"
+            [class.bg-surface]="colorSeleccionado()?.id === color.id"
+            [class.border-border]="colorSeleccionado()?.id !== color.id"
+            [class.text-ink-2]="colorSeleccionado()?.id !== color.id"
             (click)="seleccionarColor(color)">
             {{ color.color }}
           </button>
         }
       </div>
 
-      @if (colorSeleccionado(); as color) {
-        <h3>Talla</h3>
-        <div class="opciones-talla">
-          @for (variante of color.variantes; track variante.id) {
+      <!-- Selector de Talla -->
+      @if (colorSeleccionado()) {
+        <h3 class="text-xs font-bold uppercase tracking-widest text-ink mt-8 mb-3">Talla</h3>
+        <div class="flex flex-wrap gap-3">
+          @for (variante of colorSeleccionado()!.variantes; track variante.id) {
             <button
-              class="opcion-talla"
-              [class.activo]="varianteSeleccionada()?.id === variante.id"
+              class="w-14 h-14 border text-sm font-bold transition-all disabled:opacity-20 disabled:cursor-not-allowed"
+              [class.border-ink]="varianteSeleccionada()?.id === variante.id"
+              [class.bg-black]="varianteSeleccionada()?.id === variante.id"
+              [class.text-white]="varianteSeleccionada()?.id === variante.id"
+              [class.border-border]="varianteSeleccionada()?.id !== variante.id"
+              [class.text-ink]="varianteSeleccionada()?.id !== variante.id"
               [disabled]="variante.stock === 0"
               (click)="seleccionarTalla(variante)">
               {{ variante.talla }}
-              @if (variante.stock === 0) {
-                <span class="agotado">Agotado</span>
-              }
             </button>
           }
         </div>
       }
 
-      @if (varianteSeleccionada(); as v) {
-        <p class="stock-info">Disponible: {{ v.stock }} unidades</p>
-        <button class="btn-agregar" (click)="agregarAlCarrito()">
-          {{ agregadoAlCarrito() ? '✓ Agregado' : 'Agregar al carrito' }}
+      <!-- Botón Agregar -->
+      @if (varianteSeleccionada()) {
+        <p class="text-sm text-ink-2 mt-6 font-mono">Disponible: {{ varianteSeleccionada()!.stock }} unidades</p>
+        <button
+          class="w-full bg-black text-white font-bold uppercase tracking-widest py-4 mt-4 hover:bg-ink-2 transition-colors"
+          (click)="agregarAlCarrito()">
+          Agregar al carrito
         </button>
       } @else {
-        <p class="stock-info aviso">Selecciona una talla</p>
+        <p class="text-sm text-red-600 mt-6 font-bold">Selecciona una talla para continuar</p>
       }
     </div>
   </div>

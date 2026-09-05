@@ -1,41 +1,62 @@
-<div class="admin-header">
-  <h1>Productos</h1>
-  <app-admin-nav></app-admin-nav>
-  <a routerLink="/admin/productos/nuevo" class="btn-primario">+ Nuevo producto</a>
+<div class="flex justify-between items-center mb-10 max-w-7xl mx-auto">
+  <h1 class="text-4xl font-bold uppercase text-white tracking-tight">Productos</h1>
+
+  <div class="flex items-center gap-6">
+    <app-admin-nav></app-admin-nav>
+
+    <a routerLink="/admin/productos/nuevo" class="bg-white text-black px-6 py-3 text-sm font-bold uppercase tracking-wider rounded-md hover:bg-zinc-200 transition-colors shadow-lg">
+      + Nuevo producto
+    </a>
+  </div>
 </div>
 
-@if (cargando()) {
-  <p class="estado">Cargando...</p>
-}
+<div class="max-w-7xl mx-auto">
 
-<table class="tabla" *ngIf="!cargando()">
-  <thead>
-  <tr>
-    <th>Nombre</th>
-    <th>Precio</th>
-    <th>Deportes</th>
-    <th>Colores</th>
-    <th>Estado</th>
-    <th></th>
-  </tr>
-  </thead>
-  <tbody>
-    @for (p of prendas(); track p.id) {
-      <tr>
-        <td>{{ p.nombre }}</td>
-        <td class="mono">Q{{ p.precioBase.toFixed(2) }}</td>
-        <td>{{ p.deportes.join(', ') || '—' }}</td>
-        <td>{{ p.colores.length }}</td>
-        <td><span class="badge">{{ p.estado }}</span></td>
-        <td class="acciones">
-          <a [routerLink]="['/admin/productos', p.id]">Editar</a>
-          <button (click)="eliminar(p.id, p.nombre)">Eliminar</button>
-        </td>
-      </tr>
-    }
-  </tbody>
-</table>
+  @if (cargando()) {
+    <p class="text-zinc-500 py-4 text-center font-medium animate-pulse">Cargando catálogo...</p>
+  }
 
-@if (!cargando() && prendas().length === 0) {
-  <p class="estado">No hay productos todavía.</p>
-}
+  @if (!cargando() && prendas().length > 0) {
+    <div class="bg-zinc-900 shadow-2xl border border-zinc-800 rounded-xl overflow-hidden">
+      <table class="w-full text-left border-collapse">
+        <thead class="bg-zinc-950/50 border-b border-zinc-800">
+        <tr>
+          <th class="px-6 py-5 text-xs font-bold text-zinc-400 uppercase tracking-widest">Nombre</th>
+          <th class="px-6 py-5 text-xs font-bold text-zinc-400 uppercase tracking-widest">Precio</th>
+          <th class="px-6 py-5 text-xs font-bold text-zinc-400 uppercase tracking-widest">Deportes</th>
+          <th class="px-6 py-5 text-xs font-bold text-zinc-400 uppercase tracking-widest">Colores</th>
+          <th class="px-6 py-5 text-xs font-bold text-zinc-400 uppercase tracking-widest">Estado</th>
+          <th class="px-6 py-5 text-xs font-bold text-zinc-400 uppercase tracking-widest text-right">Acciones</th>
+        </tr>
+        </thead>
+        <tbody class="divide-y divide-zinc-800">
+          @for (p of prendas(); track p.id) {
+            <tr class="hover:bg-zinc-800/50 transition-colors group">
+              <td class="px-6 py-4 text-sm font-bold text-zinc-100">{{ p.nombre }}</td>
+              <td class="px-6 py-4 text-sm font-mono font-bold text-white">Q{{ p.precioBase.toFixed(2) }}</td>
+              <td class="px-6 py-4 text-sm text-zinc-400">{{ p.deportes.join(', ') || '—' }}</td>
+              <td class="px-6 py-4 text-sm text-zinc-400">{{ p.colores.length }}</td>
+              <td class="px-6 py-4">
+                <span class="px-3 py-1 bg-zinc-800 text-zinc-300 rounded-full text-xs font-bold border border-zinc-700 uppercase">
+                  {{ p.estado }}
+                </span>
+              </td>
+              <td class="px-6 py-4 flex gap-4 justify-end">
+                <a [routerLink]="['/admin/productos', p.id]" class="text-sm font-bold text-zinc-400 hover:text-white transition-colors">Editar</a>
+                <button (click)="eliminar(p.id, p.nombre)" class="text-sm font-bold text-red-500 hover:text-red-400 transition-colors">Eliminar</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+  @if (!cargando() && prendas().length === 0) {
+    <div class="text-center py-16 bg-zinc-900 rounded-xl border border-zinc-800 shadow-xl">
+      <span class="material-symbols-outlined text-5xl text-zinc-700 mb-4 block">inventory_2</span>
+      <p class="text-zinc-400 text-lg">El catálogo está vacío.</p>
+    </div>
+  }
+
+</div>

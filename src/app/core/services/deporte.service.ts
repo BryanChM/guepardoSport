@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Deporte } from '../models/deporte.model';
+import { environment } from '../../../environments/environment';
 
-const API_URL = 'http://localhost:8080/api/deportes';
-
+const API_URL = `${environment.apiUrl}/deportes`;
 @Injectable({ providedIn: 'root' })
 export class DeporteService {
   constructor(private http: HttpClient) {}

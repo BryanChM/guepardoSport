@@ -2,8 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Cupon, CuponCreateDTO } from '../models/cupon.model';
+import { environment } from '../../../environments/environment';
 
-const API_URL = 'http://localhost:8080/api/admin/cupones';
+
+const API_URL = `${environment.apiUrl}/admin/cupones`;
 
 @Injectable({ providedIn: 'root' })
 export class CuponService {

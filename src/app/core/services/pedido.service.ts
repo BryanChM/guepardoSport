@@ -3,7 +3,12 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CheckoutRequest, Pedido } from '../models/pedido.model';
 
-const API_URL = 'http://localhost:8080/api/pedidos';
+import { environment } from '../../../environments/environment';
+
+const API_URL = `${environment.apiUrl}/pedidos`;
+
+
+
 
 @Injectable({ providedIn: 'root' })
 export class PedidoService {

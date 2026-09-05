@@ -3,7 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { AuthResponse, LoginRequest, RegistroRequest } from '../models/auth.model';
 
-const API_URL = 'http://localhost:8080/api/auth';
+import { environment } from '../../../environments/environment';
+const API_URL = `${environment.apiUrl}/auth`;
+
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {

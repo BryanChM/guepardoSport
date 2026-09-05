@@ -1,42 +1,169 @@
-<h1 class="titulo-pagina">Tu carrito</h1>
+<!-- Panel de Carrito estilo Gymshark -->
+<div class="flex flex-col h-full bg-white relative">
 
-@if (carritoService.items().length === 0) {
-  <div class="carrito-vacio">
-    <p>Tu carrito está vacío.</p>
-    <a routerLink="/" class="btn-primario">Ver catálogo</a>
+  <!-- 1. HEADER -->
+  <div class="flex items-center justify-between px-5 py-4 border-b border-gray-200 shrink-0">
+    <h2 class="font-headline font-black text-xl uppercase tracking-tight text-black">TU BOLSA</h2>
+    <a routerLink="/" class="text-[12px] text-gray-500 underline hover:text-black transition-colors">
+      Seguir comprando
+    </a>
   </div>
-} @else {
-  <div class="carrito-layout">
-    <div class="carrito-items">
-      @for (item of carritoService.items(); track item.varianteId) {
-        <div class="item-carrito">
-          <img [src]="item.imagen" [alt]="item.nombre" />
-          <div class="item-info">
-            <h3>{{ item.nombre }}</h3>
-            <p class="item-detalle">{{ item.color }} · Talla {{ item.talla }}</p>
-            <p class="item-precio">Q{{ item.precioUnitario.toFixed(2) }}</p>
-          </div>
-          <div class="item-cantidad">
-            <button (click)="disminuir(item.varianteId, item.cantidad)">−</button>
-            <span>{{ item.cantidad }}</span>
-            <button
-              (click)="aumentar(item.varianteId, item.cantidad)"
-              [disabled]="item.cantidad >= item.stockDisponible">+</button>
-          </div>
-          <p class="item-subtotal">Q{{ (item.precioUnitario * item.cantidad).toFixed(2) }}</p>
-          <button class="item-eliminar" (click)="eliminar(item.varianteId)">×</button>
+
+  @if (carritoService.items().length === 0) {
+    <!-- ESTADO VACÍO -->
+    <div class="flex-1 flex flex-col items-center justify-center p-8 text-center">
+      <span class="material-symbols-outlined text-[60px] text-gray-200 mb-4">shopping_bag</span>
+      <p class="text-gray-500 mb-6 text-[14px]">Tu bolsa está vacía.</p>
+      <a routerLink="/" class="bg-black text-white px-8 py-4 font-headline font-bold uppercase text-[13px] hover:bg-gray-800 transition-colors">
+        Ver catálogo
+      </a>
+    </div>
+  } @else {
+    <!-- ESTADO CON PRODUCTOS -->
+
+    <!-- Barra de envío gratis -->
+    <div class="px-5 py-4 bg-white border-b border-gray-100 shrink-0">
+      <p class="text-[13px] mb-2 flex items-center gap-1 text-black">
+        Estás a Q{{ (500 - carritoService.subtotal()) > 0 ? (500 - carritoService.subtotal()).toFixed(2) : '0.00' }} del envío estándar gratis
+        <span class="material-symbols-outlined text-[15px] text-gray-500 cursor-help">info</span>
+      </p>
+      <!-- Barra de progreso azul estilo Gymshark -->
+      <div class="relative w-full h-1.5 bg-gray-200 rounded-full overflow-hidden mb-2">
+        <div class="absolute left-0 top-0 h-full bg-blue-600 rounded-full transition-all duration-500"
+             [style.width]="(carritoService.subtotal() / 500 * 100) > 100 ? '100%' : (carritoService.subtotal() / 500 * 100) + '%'">
         </div>
-      }
+      </div>
+      <div class="flex justify-between text-[11px] text-gray-400 font-bold">
+        <span>Q0</span>
+        <span>Q500</span>
+      </div>
     </div>
 
-    <aside class="resumen">
-      <h2>Resumen</h2>
-      <div class="resumen-linea">
-        <span>Subtotal</span>
-        <span class="mono">Q{{ carritoService.subtotal().toFixed(2) }}</span>
+    <!-- Lista scrolleable -->
+    <div class="flex-1 overflow-y-auto">
+
+      <!-- Aviso "artículos no reservados" -->
+      <div class="mx-5 mt-4 mb-2 flex items-start gap-2 text-[13px]">
+        <span class="material-symbols-outlined text-[16px] mt-0.5 shrink-0">info</span>
+        <p class="text-black leading-snug">
+          <span class="font-bold">Tus artículos no están reservados,</span> completa el pago rápido para asegurar tu compra.
+        </p>
       </div>
-      <p class="resumen-nota">El envío y los impuestos se calculan en el siguiente paso.</p>
-      <a routerLink="/checkout" class="btn-primario btn-checkout">Continuar a pagar</a>
-    </aside>
-  </div>
-}
+
+      <!-- Items del carrito -->
+      <div class="px-5 py-4 flex flex-col divide-y divide-gray-100">
+        @for (item of carritoService.items(); track item.varianteId) {
+          <div class="flex gap-4 py-5 first:pt-2">
+
+            <!-- Imagen del producto -->
+            <div class="w-[80px] h-[100px] bg-gray-100 shrink-0 overflow-hidden relative">
+              <!-- Badge "Nuevo" -->
+              <span class="absolute top-1.5 left-1.5 bg-white text-black text-[9px] font-bold px-1.5 py-0.5 uppercase leading-none">Nuevo</span>
+              <img [src]="item.imagen" [alt]="item.nombre" class="w-full h-full object-cover" />
+            </div>
+
+            <!-- Detalles -->
+            <div class="flex-1 flex flex-col">
+              <div class="flex justify-between items-start">
+                <div class="pr-2">
+                  <h3 class="font-bold text-[13px] text-black leading-tight">{{ item.nombre }}</h3>
+                  <p class="text-[12px] text-gray-500 mt-0.5">{{ item.color }}</p>
+                  <p class="text-[12px] text-gray-500">{{ item.color }} · Talla {{ item.talla }}</p>
+                </div>
+                <!-- Botón corazón -->
+                <button class="text-gray-400 hover:text-black transition-colors shrink-0">
+                  <span class="material-symbols-outlined text-[18px]">favorite_border</span>
+                </button>
+              </div>
+
+              <!-- Precio + cantidad -->
+              <div class="mt-auto flex justify-between items-center pt-3">
+                <p class="font-bold text-[14px] text-black">Q{{ item.precioUnitario.toFixed(2) }}</p>
+
+                <!-- Controles cantidad -->
+                <div class="flex items-center gap-3 text-[14px]">
+                  <button (click)="disminuir(item.varianteId, item.cantidad)"
+                          class="w-6 h-6 flex items-center justify-center font-bold hover:opacity-50 transition-opacity text-lg leading-none">−</button>
+                  <span class="font-bold w-4 text-center text-[14px]">{{ item.cantidad }}</span>
+                  <button (click)="aumentar(item.varianteId, item.cantidad)"
+                          [disabled]="item.cantidad >= item.stockDisponible"
+                          class="w-6 h-6 flex items-center justify-center font-bold hover:opacity-50 transition-opacity text-lg leading-none disabled:opacity-30">+</button>
+                </div>
+              </div>
+
+              <!-- Eliminar -->
+              <button (click)="eliminar(item.varianteId)"
+                      class="text-left text-[12px] text-gray-400 underline hover:text-black transition-colors mt-1.5 w-fit">
+                Eliminar
+              </button>
+            </div>
+
+          </div>
+        }
+      </div>
+
+      <!-- AGREGA UN POCO MÁS -->
+      <div class="bg-gray-50 border-t border-gray-200 px-5 py-4">
+        <h3 class="font-headline font-black text-[13px] uppercase tracking-wide text-black mb-1">AGREGA UN POCO MÁS</h3>
+        <p class="text-[12px] text-gray-500 mb-4">Agrega uno o más artículos para obtener envío gratis</p>
+
+        <div class="flex gap-3">
+          <!-- Sugerencia 1 -->
+          <div class="flex items-center gap-3 bg-white border border-gray-200 p-3 flex-1">
+            <div class="w-12 h-14 bg-gray-100 shrink-0"></div>
+            <div class="flex-1 min-w-0">
+              <p class="text-[12px] font-bold text-black leading-tight">Bolsa Deportiva</p>
+              <p class="text-[12px] text-gray-500">Q299.00</p>
+            </div>
+            <button class="text-black text-[12px] font-bold flex items-center gap-0.5 hover:opacity-60 transition-opacity whitespace-nowrap">
+              <span class="text-base leading-none">+</span> Agregar
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- FOOTER: Código descuento + Checkout -->
+    <div class="border-t border-gray-200 bg-white shrink-0">
+
+      <!-- Código de descuento -->
+      <div class="px-5 py-4 border-b border-gray-100">
+        <p class="font-headline font-black text-[13px] uppercase tracking-wide text-black mb-3">CÓDIGO DE DESCUENTO</p>
+        <div class="flex gap-2">
+          <input type="text"
+                 placeholder="Ingresa tu código"
+                 class="flex-1 border border-gray-300 px-3 py-2.5 text-[13px] text-black placeholder-gray-400 focus:outline-none focus:border-black transition-colors" />
+          <button class="bg-black text-white px-4 py-2.5 font-bold text-[13px] uppercase hover:bg-gray-800 transition-colors whitespace-nowrap">
+            Aplicar
+          </button>
+        </div>
+      </div>
+
+      <!-- Subtotal + Checkout -->
+      <div class="px-5 py-4">
+        <div class="flex justify-between items-center mb-4">
+          <span class="text-black font-bold uppercase text-[13px] tracking-wide">Subtotal</span>
+          <span class="font-headline font-black text-xl text-black">Q{{ carritoService.subtotal().toFixed(2) }}</span>
+        </div>
+
+        <!-- Botón Checkout Seguro -->
+        <a routerLink="/checkout"
+           class="w-full bg-black text-white font-bold uppercase py-4 flex justify-center items-center gap-2 hover:bg-gray-800 transition-colors text-[14px] tracking-wide">
+          <span class="material-symbols-outlined text-[18px]">lock</span>
+          Checkout Seguro
+        </a>
+
+        <!-- Badges de pago -->
+        <div class="flex justify-center gap-1.5 mt-4 flex-wrap">
+          <span class="text-[9px] font-bold bg-[#1A1F71] text-white px-2.5 py-1 rounded-sm">VISA</span>
+          <span class="text-[9px] font-bold bg-white text-gray-800 border border-gray-200 px-2.5 py-1 rounded-sm">MC</span>
+          <span class="text-[9px] font-bold bg-[#003087] text-white px-2.5 py-1 rounded-sm">PayPal</span>
+          <span class="text-[9px] font-bold bg-black text-white px-2.5 py-1 rounded-sm">⊠ Pay</span>
+        </div>
+      </div>
+
+    </div>
+  }
+
+</div>

@@ -1,34 +1,54 @@
-<app-admin-nav></app-admin-nav>
+<div class="flex justify-between items-center mb-10">
+  <h1 class="text-4xl font-bold uppercase text-white tracking-tight">Categorías</h1>
+  <app-admin-nav></app-admin-nav>
+</div>
 
-<div class="admin-header"><h1>Categorías</h1></div>
-
-<section class="tarjeta-form">
-  <h2>Nueva categoría</h2>
-  <div class="fila-form" style="grid-template-columns: 1fr auto;">
-    <input type="text" [(ngModel)]="nuevoNombre" placeholder="Ej. Ciclismo" />
-    <button class="btn-primario" (click)="agregar()">Agregar</button>
+<!-- Formulario para nueva categoría -->
+<section class="bg-zinc-900 border border-zinc-800 p-8 rounded-xl shadow-2xl mb-10 max-w-2xl">
+  <h2 class="text-xl font-bold uppercase text-white mb-6 tracking-wide">Nueva categoría</h2>
+  <div class="flex gap-4">
+    <input type="text" [(ngModel)]="nuevoNombre" placeholder="Ej. Ciclismo"
+           class="flex-1 border border-zinc-700 bg-zinc-950 text-white placeholder-zinc-600 p-3 rounded-md focus:outline-none focus:border-white focus:ring-1 focus:ring-white transition-all" />
+    <button class="bg-white text-black px-8 py-3 font-bold uppercase tracking-widest rounded-md hover:bg-zinc-200 transition-colors" (click)="agregar()">Agregar</button>
   </div>
 </section>
 
-<table class="tabla">
-  <thead><tr><th>Nombre</th><th></th></tr></thead>
-  <tbody>
-    @for (c of categorias(); track c.id) {
-      <tr>
-        @if (editandoId === c.id) {
-          <td><input type="text" [(ngModel)]="nombreEdicion" /></td>
-          <td class="acciones">
-            <button (click)="guardar(c.id)">Guardar</button>
-            <button (click)="editandoId = null">Cancelar</button>
-          </td>
-        } @else {
-          <td>{{ c.nombre }}</td>
-          <td class="acciones">
-            <button (click)="editar(c)">Editar</button>
-            <button class="peligro" (click)="eliminar(c.id, c.nombre)">Eliminar</button>
-          </td>
-        }
-      </tr>
-    }
-  </tbody>
-</table>
+<!-- Tabla -->
+<div class="bg-zinc-900 shadow-2xl border border-zinc-800 rounded-xl overflow-hidden max-w-4xl">
+  <table class="w-full text-left border-collapse">
+    <thead class="bg-zinc-950/50 border-b border-zinc-800">
+    <tr>
+      <th class="px-6 py-5 text-xs font-bold text-zinc-400 uppercase tracking-widest">Nombre</th>
+      <th class="px-6 py-5 text-xs font-bold text-zinc-400 uppercase tracking-widest text-right">Acciones</th>
+    </tr>
+    </thead>
+    <tbody class="divide-y divide-zinc-800">
+      @for (c of categorias(); track c.id) {
+        <tr class="hover:bg-zinc-800/50 transition-colors group">
+
+          <!-- Modo Edición -->
+          @if (editandoId === c.id) {
+            <td class="px-6 py-4">
+              <input type="text" [(ngModel)]="nombreEdicion"
+                     class="w-full border border-zinc-700 bg-zinc-950 text-white p-2 rounded focus:outline-none focus:border-white" />
+            </td>
+            <td class="px-6 py-4 flex gap-4 justify-end">
+              <button (click)="guardar(c.id)" class="text-sm font-bold text-green-500 hover:text-green-400 transition-colors">Guardar</button>
+              <button (click)="editandoId = null" class="text-sm font-bold text-zinc-400 hover:text-white transition-colors">Cancelar</button>
+            </td>
+          }
+
+          <!-- Modo Vista Normal -->
+          @else {
+            <td class="px-6 py-4 text-sm font-bold text-zinc-100">{{ c.nombre }}</td>
+            <td class="px-6 py-4 flex gap-4 justify-end">
+              <button (click)="editar(c)" class="text-sm font-bold text-zinc-400 hover:text-white transition-colors">Editar</button>
+              <button class="text-sm font-bold text-red-500 hover:text-red-400 transition-colors" (click)="eliminar(c.id, c.nombre)">Eliminar</button>
+            </td>
+          }
+
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { CarritoService } from '../../core/services/carrito.service';
@@ -11,6 +11,9 @@ import { CarritoService } from '../../core/services/carrito.service';
   styleUrl: './carrito.scss',
 })
 export class Carrito {
+  // Creamos un emisor de eventos para avisar al componente padre que debe cerrar el panel
+  @Output() cerrarPanel = new EventEmitter<void>();
+
   constructor(public carritoService: CarritoService) {}
 
   aumentar(varianteId: number, cantidadActual: number): void {
@@ -23,5 +26,10 @@ export class Carrito {
 
   eliminar(varianteId: number): void {
     this.carritoService.eliminar(varianteId);
+  }
+
+  // Método para disparar el evento de cierre
+  cerrar(): void {
+    this.cerrarPanel.emit();
   }
 }

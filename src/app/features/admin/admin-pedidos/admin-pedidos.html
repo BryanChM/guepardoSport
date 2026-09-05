@@ -1,71 +1,109 @@
-<app-admin-nav></app-admin-nav>
-
-<div class="admin-header">
-  <h1>Pedidos</h1>
+<div class="flex justify-between items-center mb-10 max-w-7xl mx-auto">
+  <h1 class="text-4xl font-bold uppercase text-white tracking-tight">Pedidos</h1>
+  <app-admin-nav></app-admin-nav>
 </div>
 
-@if (cargando()) { <p class="estado">Cargando...</p> }
+<div class="max-w-7xl mx-auto">
 
-<table class="tabla" *ngIf="!cargando()">
-  <thead>
-  <tr>
-    <th>#</th><th>Cliente</th><th>Total</th><th>Pago</th><th>Estado</th><th>Rastreo</th><th></th>
-  </tr>
-  </thead>
-  <tbody>
-    @for (p of pedidos(); track p.id) {
-      <tr>
-        <td class="mono">#{{ p.id }}</td>
-        <td>{{ p.nombreContacto }}</td>
-        <td class="mono">Q{{ p.total.toFixed(2) }}</td>
-        <td>
-          <span class="badge" [class.badge--pagado]="p.estadoPago === 'PAGADO'" [class.badge--pendiente]="p.estadoPago !== 'PAGADO'">
-            {{ p.estadoPago }}
-          </span>
-        </td>
-        <td>
-          <select [ngModel]="p.estadoLogistico" (ngModelChange)="cambiarEstado(p.id, $event)">
-            @for (e of estadosLogisticos; track e) {
-              <option [value]="e">{{ e }}</option>
-            }
-          </select>
-        </td>
-        <td>{{ p.numeroRastreo || '—' }}</td>
-        <td class="acciones">
-          @if (p.estadoPago !== 'PAGADO') {
-            <button (click)="marcarPagado(p.id)">Marcar pagado</button>
-          }
-          <button (click)="toggleExpandir(p.id)">{{ expandidoId === p.id ? 'Cerrar' : 'Detalle' }}</button>
-        </td>
-      </tr>
+  @if (cargando()) {
+    <p class="text-zinc-500 py-4 text-center font-medium animate-pulse">Cargando pedidos...</p>
+  }
 
-      @if (expandidoId === p.id) {
+  @if (!cargando() && pedidos().length > 0) {
+    <div class="bg-zinc-900 shadow-2xl border border-zinc-800 rounded-xl overflow-hidden">
+      <table class="w-full text-left border-collapse">
+        <thead class="bg-zinc-950/50 border-b border-zinc-800">
         <tr>
-          <td colspan="7">
-            <div class="detalle-pedido">
-              <div class="detalle-pedido__items">
-                <strong>Productos:</strong>
-                <ul>
-                  @for (d of p.detalles; track d.prenda + d.talla) {
-                    <li>{{ d.prenda }} — {{ d.color }}, talla {{ d.talla }} × {{ d.cantidad }} — Q{{ (d.precioUnitario * d.cantidad).toFixed(2) }} (IVA: Q{{ d.ivaLinea.toFixed(2) }})</li>
-                  }
-                </ul>
-                <p>Dirección: {{ p.direccionEnvio }}</p>
-                <p>Método de pago: {{ p.metodoPago }}</p>
-              </div>
-
-              <div class="detalle-pedido__rastreo">
-                <strong>Número de rastreo</strong>
-                <input type="text" [(ngModel)]="formRastreo[p.id].empresaMensajeria" placeholder="Empresa (Cargo Expreso, Guatex...)" />
-                <input type="text" [(ngModel)]="formRastreo[p.id].numeroRastreo" placeholder="Número de guía" />
-                <button class="btn-primario" (click)="guardarRastreo(p.id)">Guardar rastreo</button>
-              </div>
-            </div>
-          </td>
+          <th class="px-6 py-5 text-xs font-bold text-zinc-400 uppercase tracking-widest">#</th>
+          <th class="px-6 py-5 text-xs font-bold text-zinc-400 uppercase tracking-widest">Cliente</th>
+          <th class="px-6 py-5 text-xs font-bold text-zinc-400 uppercase tracking-widest">Total</th>
+          <th class="px-6 py-5 text-xs font-bold text-zinc-400 uppercase tracking-widest">Pago</th>
+          <th class="px-6 py-5 text-xs font-bold text-zinc-400 uppercase tracking-widest">Estado</th>
+          <th class="px-6 py-5 text-xs font-bold text-zinc-400 uppercase tracking-widest">Rastreo</th>
+          <th class="px-6 py-5 text-xs font-bold text-zinc-400 uppercase tracking-widest text-right">Acciones</th>
         </tr>
-      }
-    }
-  </tbody>
-</table>
+        </thead>
+        <tbody class="divide-y divide-zinc-800">
+          @for (p of pedidos(); track p.id) {
+            <tr class="hover:bg-zinc-800/40 transition-colors">
+              <td class="px-6 py-4 text-sm font-mono font-bold text-white">#{{ p.id }}</td>
+              <td class="px-6 py-4 text-sm font-bold text-zinc-100">{{ p.nombreContacto }}</td>
+              <td class="px-6 py-4 text-sm font-mono font-bold text-white">Q{{ p.total.toFixed(2) }}</td>
+              <td class="px-6 py-4">
+                <span class="px-3 py-1 rounded-full text-xs font-bold border uppercase tracking-wider"
+                      [class.bg-green-950]="p.estadoPago === 'PAGADO'" [class.text-green-400]="p.estadoPago === 'PAGADO'" [class.border-green-800]="p.estadoPago === 'PAGADO'"
+                      [class.bg-amber-950]="p.estadoPago !== 'PAGADO'" [class.text-amber-400]="p.estadoPago !== 'PAGADO'" [class.border-amber-800]="p.estadoPago !== 'PAGADO'">
+                  {{ p.estadoPago }}
+                </span>
+              </td>
+              <td class="px-6 py-4">
+                <select [ngModel]="p.estadoLogistico" (ngModelChange)="cambiarEstado(p.id, $event)"
+                        class="bg-zinc-950 border border-zinc-700 text-zinc-200 text-xs uppercase font-bold py-1.5 px-3 rounded focus:outline-none focus:border-white transition-all cursor-pointer">
+                  @for (e of estadosLogisticos; track e) {
+                    <option [value]="e">{{ e }}</option>
+                  }
+                </select>
+              </td>
+              <td class="px-6 py-4 text-sm font-mono text-zinc-400">{{ p.numeroRastreo || '—' }}</td>
+              <td class="px-6 py-4 flex gap-4 justify-end items-center">
+                @if (p.estadoPago !== 'PAGADO') {
+                  <button (click)="marcarPagado(p.id)" class="text-xs font-bold text-amber-400 hover:text-amber-300 transition-colors uppercase">Marcar pagado</button>
+                }
+                <button (click)="toggleExpandir(p.id)" class="text-xs font-bold text-zinc-300 hover:text-white transition-colors uppercase bg-zinc-800 border border-zinc-700 px-3 py-1.5 rounded">
+                  {{ expandidoId === p.id ? 'Cerrar' : 'Detalle' }}
+                </button>
+              </td>
+            </tr>
 
-@if (!cargando() && pedidos().length === 0) { <p class="estado">No hay pedidos todavía.</p> }
+            <!-- Fila expandible con los detalles y rastreo -->
+            @if (expandidoId === p.id) {
+              <tr class="bg-zinc-950/80">
+                <td colspan="7" class="px-8 py-6">
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+                    <!-- Información de productos y envío -->
+                    <div class="flex flex-col gap-3 text-sm">
+                      <strong class="text-white uppercase tracking-wider text-xs">Productos del pedido:</strong>
+                      <ul class="flex flex-col gap-2 pl-4 border-l border-zinc-800">
+                        @for (d of p.detalles; track d.prenda + d.talla) {
+                          <li class="text-zinc-300">
+                            <span class="font-bold text-white">{{ d.prenda }}</span> — {{ d.color }}, Talla {{ d.talla }} × {{ d.cantidad }}
+                            <span class="font-mono text-zinc-400">(Q{{ (d.precioUnitario * d.cantidad).toFixed(2) }} | IVA: Q{{ d.ivaLinea.toFixed(2) }})</span>
+                          </li>
+                        }
+                      </ul>
+                      <p class="text-zinc-400 mt-2"><strong class="text-zinc-200">Dirección de envío:</strong> {{ p.direccionEnvio }}</p>
+                      <p class="text-zinc-400"><strong class="text-zinc-200">Método de pago:</strong> {{ p.metodoPago }}</p>
+                    </div>
+
+                    <!-- Configuración de rastreo -->
+                    <div class="flex flex-col gap-3 bg-zinc-900 border border-zinc-800 p-6 rounded-lg">
+                      <strong class="text-white uppercase tracking-wider text-xs">Número de rastreo y guía</strong>
+                      <input type="text" [(ngModel)]="formRastreo[p.id].empresaMensajeria" placeholder="Empresa (Cargo Expreso, Guatex...)"
+                             class="border border-zinc-700 bg-zinc-950 text-white placeholder-zinc-600 p-2.5 rounded text-sm focus:outline-none focus:border-white" />
+                      <input type="text" [(ngModel)]="formRastreo[p.id].numeroRastreo" placeholder="Número de guía"
+                             class="border border-zinc-700 bg-zinc-950 text-white placeholder-zinc-600 p-2.5 rounded text-sm focus:outline-none focus:border-white" />
+                      <button class="bg-white text-black font-bold uppercase text-xs tracking-widest py-3 rounded hover:bg-zinc-200 transition-colors mt-2"
+                              (click)="guardarRastreo(p.id)">
+                        Guardar rastreo
+                      </button>
+                    </div>
+
+                  </div>
+                </td>
+              </tr>
+            }
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+  @if (!cargando() && pedidos().length === 0) {
+    <div class="text-center py-16 bg-zinc-900 rounded-xl border border-zinc-800 shadow-xl">
+      <span class="material-symbols-outlined text-5xl text-zinc-700 mb-4 block">receipt_long</span>
+      <p class="text-zinc-400 text-lg">No hay pedidos todavía.</p>
+    </div>
+  }
+
+</div>

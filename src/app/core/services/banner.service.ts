@@ -2,9 +2,10 @@ import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs';
 import { MensajeBanner, ImagenHero } from '../models/banner.model';
+import { environment } from '../../../environments/environment';
 
-const API_MENSAJES = 'http://localhost:8080/api/banner-mensajes';
-const API_IMAGENES = 'http://localhost:8080/api/imagenes-hero';
+const API_MENSAJES = `${environment.apiUrl}/banner-mensajes`;
+const API_IMAGENES = `${environment.apiUrl}/imagenes-hero`;
 
 @Injectable({ providedIn: 'root' })
 export class BannerService {

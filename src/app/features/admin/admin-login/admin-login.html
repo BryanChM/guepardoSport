@@ -1,25 +1,60 @@
-<div class="login-container">
-  <form class="login-card" (ngSubmit)="onSubmit()">
-    <span class="mancha mancha--brand" aria-hidden="true"></span>
-    <h1>Panel de Administración</h1>
-    <p class="subtitulo">Guepardo Sport</p>
+<div class="min-h-[80vh] flex items-center justify-center px-4">
+  <!-- Tarjeta oscura con sombra profunda -->
+  <form class="bg-zinc-900 p-10 rounded-xl shadow-2xl border border-zinc-800 w-full max-w-md relative overflow-hidden" (ngSubmit)="onSubmit()">
 
-    <label>
-      Correo
-      <input type="email" name="correo" [(ngModel)]="correo" required autocomplete="username" />
-    </label>
+    <!-- Detalle decorativo superior (Línea blanca fina) -->
+    <div class="absolute top-0 left-0 w-full h-1 bg-white"></div>
 
-    <label>
-      Contraseña
-      <input type="password" name="password" [(ngModel)]="password" required autocomplete="current-password" />
-    </label>
+    <!-- Títulos -->
+    <h1 class="text-3xl font-bold uppercase text-white text-center mt-2 tracking-tight">Panel de Control</h1>
+    <p class="text-xs text-zinc-500 uppercase tracking-widest text-center mb-10">Guepardo Sport</p>
 
+    <!-- Input Correo -->
+    <div class="mb-5">
+      <label class="block text-xs font-bold text-zinc-400 uppercase tracking-wide mb-2">
+        Correo electrónico
+      </label>
+      <input
+        type="email"
+        name="correo"
+        [(ngModel)]="correo"
+        required
+        autocomplete="username"
+        class="w-full border border-zinc-700 bg-zinc-950 text-white placeholder-zinc-600 p-3.5 rounded-md focus:outline-none focus:border-white focus:ring-1 focus:ring-white transition-all"
+        placeholder="admin@guepardosport.com"
+      />
+    </div>
+
+    <!-- Input Contraseña -->
+    <div class="mb-8">
+      <label class="block text-xs font-bold text-zinc-400 uppercase tracking-wide mb-2">
+        Contraseña
+      </label>
+      <input
+        type="password"
+        name="password"
+        [(ngModel)]="password"
+        required
+        autocomplete="current-password"
+        class="w-full border border-zinc-700 bg-zinc-950 text-white placeholder-zinc-600 p-3.5 rounded-md focus:outline-none focus:border-white focus:ring-1 focus:ring-white transition-all"
+        placeholder="••••••••"
+      />
+    </div>
+
+    <!-- Mensaje de Error -->
     @if (error()) {
-      <p class="error">{{ error() }}</p>
+      <div class="bg-red-950/50 text-red-400 p-3 mb-6 text-sm font-medium border border-red-900/50 text-center rounded-md">
+        {{ error() }}
+      </div>
     }
 
-    <button type="submit" [disabled]="cargando()">
-      {{ cargando() ? 'Ingresando...' : 'Ingresar' }}
+    <!-- Botón Ingresar (Blanco para contraste máximo) -->
+    <button
+      type="submit"
+      [disabled]="cargando()"
+      class="w-full bg-white text-black font-bold uppercase tracking-widest py-4 rounded-md hover:bg-zinc-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+      {{ cargando() ? 'Autenticando...' : 'Acceso' }}
     </button>
+
   </form>
 </div>

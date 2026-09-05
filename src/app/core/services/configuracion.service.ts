@@ -1,7 +1,8 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
-
+import { environment } from '../../../environments/environment';
+const API_URL = `${environment.apiUrl}/configuracion`;
 export interface ConfiguracionSitio {
   id: number;
   tituloHero: string;
@@ -11,7 +12,7 @@ export interface ConfiguracionSitio {
   logoUrl: string | null;
 }
 
-const API_URL = 'http://localhost:8080/api/configuracion';
+
 
 @Injectable({ providedIn: 'root' })
 export class ConfiguracionService {

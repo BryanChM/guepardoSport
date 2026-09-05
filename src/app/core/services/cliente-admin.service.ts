@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ClienteAdmin } from '../models/cliente.model';
-
-const API_URL = 'http://localhost:8080/api/admin/clientes';
+import { environment } from '../../../environments/environment';
+const API_URL = `${environment.apiUrl}/admin/clientes`;
 
 @Injectable({ providedIn: 'root' })
 export class ClienteAdminService {

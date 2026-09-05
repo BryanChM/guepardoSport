@@ -1,17 +1,89 @@
-<div class="login-container">
-  <form class="login-card" (ngSubmit)="onSubmit()">
-    <span class="mancha mancha--brand" aria-hidden="true"></span>
-    <h1>Iniciar sesión</h1>
-    <p class="subtitulo">Guepardo Sport</p>
+<div class="flex flex-col items-center justify-center min-h-[80vh] bg-white px-4 py-16">
+  <div class="w-full max-w-[440px] flex flex-col">
 
-    <label>Correo <input type="email" name="correo" [(ngModel)]="correo" required /></label>
-    <label>Contraseña <input type="password" name="password" [(ngModel)]="password" required /></label>
+    <!-- Logo / Brand -->
+    <div class="text-center mb-8">
+      <h1 class="font-headline font-black text-[42px] md:text-[48px] tracking-tighter uppercase text-black mb-5">
+        GUEPARDO SPORT
+      </h1>
+      <h2 class="font-headline font-bold text-[14px] uppercase tracking-widest text-black mb-3">
+        INICIA SESIÓN EN GUEPARDO SPORT
+      </h2>
+      <p class="text-[14px] text-gray-500 leading-relaxed max-w-[320px] mx-auto">
+        Compra tus estilos, guarda tus favoritos, sigue tus pedidos y entrena con nosotros.
+      </p>
+    </div>
 
-    @if (error()) { <p class="error">{{ error() }}</p> }
+    <!-- Formulario -->
+    <form (ngSubmit)="onSubmit()" class="flex flex-col w-full gap-0">
 
-    <button type="submit" [disabled]="cargando()">{{ cargando() ? 'Ingresando...' : 'Ingresar' }}</button>
+      <!-- Error -->
+      @if (error()) {
+        <div class="bg-red-50 border border-red-200 text-red-600 p-3 mb-4 text-[13px] text-center rounded-sm">
+          {{ error() }}
+        </div>
+      }
 
-    <a routerLink="/registro" class="link-secundario">¿No tienes cuenta? Regístrate</a>
-    <a routerLink="/recuperar-password" class="link-secundario">¿Olvidaste tu contraseña?</a>
-  </form>
+      <!-- Correo electrónico -->
+      <div class="mb-3">
+        <div class="relative border border-gray-300 focus-within:border-black transition-colors">
+          <input type="email"
+                 name="correo"
+                 [(ngModel)]="correo"
+                 required
+                 id="correo"
+                 class="w-full px-4 pt-5 pb-2 text-[14px] text-black bg-transparent outline-none peer placeholder-transparent"
+                 placeholder="Correo electrónico" />
+          <label for="correo"
+                 class="absolute left-4 top-2 text-[11px] text-gray-500 font-medium transition-all peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-[14px] peer-placeholder-shown:text-gray-400 peer-focus:top-2 peer-focus:text-[11px] pointer-events-none">
+            Correo electrónico*
+          </label>
+        </div>
+      </div>
+
+      <!-- Contraseña -->
+      <div class="mb-2 relative">
+        <div class="relative border border-gray-300 focus-within:border-black transition-colors">
+          <input type="password"
+                 name="password"
+                 [(ngModel)]="password"
+                 required
+                 id="password"
+                 class="w-full px-4 pt-5 pb-2 text-[14px] text-black bg-transparent outline-none peer pr-12 placeholder-transparent"
+                 placeholder="Contraseña" />
+          <label for="password"
+                 class="absolute left-4 top-2 text-[11px] text-gray-500 font-medium transition-all peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-[14px] peer-placeholder-shown:text-gray-400 peer-focus:top-2 peer-focus:text-[11px] pointer-events-none">
+            Contraseña*
+          </label>
+          <!-- Ojo -->
+          <button type="button" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-black transition-colors">
+            <span class="material-symbols-outlined text-[20px]">visibility</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ¿Olvidaste tu contraseña? -->
+      <div class="text-center my-5">
+        <a routerLink="/recuperar-password" class="text-[13px] font-bold text-black underline underline-offset-2 hover:opacity-60 transition-opacity">
+          ¿Has olvidado tu contraseña?
+        </a>
+      </div>
+
+      <!-- Botón Acceso -->
+      <button type="submit"
+              [disabled]="cargando()"
+              class="w-full bg-black text-white font-headline font-bold text-[14px] uppercase py-4 hover:bg-gray-800 transition-colors tracking-wide disabled:opacity-60 disabled:cursor-not-allowed">
+        {{ cargando() ? 'Ingresando...' : 'Acceso' }}
+      </button>
+
+      <!-- ¿No tienes cuenta? -->
+      <div class="mt-6 text-center text-[14px] text-black">
+        ¿No tiene una cuenta?
+        <a routerLink="/registro" class="font-bold underline underline-offset-2 hover:opacity-60 transition-opacity ml-1">
+          Inscribirte
+        </a>
+      </div>
+
+    </form>
+  </div>
 </div>

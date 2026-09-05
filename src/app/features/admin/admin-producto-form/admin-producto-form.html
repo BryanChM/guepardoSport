@@ -1,111 +1,163 @@
-<a routerLink="/admin/productos" class="volver">← Volver a productos</a>
+<div class="max-w-4xl mx-auto pb-16">
 
-<h1>{{ esEdicion ? 'Editar producto' : 'Nuevo producto' }}</h1>
+  <!-- Enlace para volver -->
+  <a routerLink="/admin/productos" class="inline-flex items-center text-sm font-bold uppercase tracking-wider text-zinc-400 hover:text-white transition-colors mb-6">
+    ← Volver a productos
+  </a>
 
-@if (error()) {
-  <p class="error">{{ error() }}</p>
-}
+  <h1 class="text-4xl font-bold uppercase text-white tracking-tight mb-8">
+    {{ esEdicion ? 'Editar producto' : 'Nuevo producto' }}
+  </h1>
 
-<section class="tarjeta-form">
-  <h2>Datos básicos</h2>
-
-  <label>
-    Nombre
-    <input type="text" [(ngModel)]="nombre" name="nombre" />
-  </label>
-
-  <label>
-    Descripción
-    <textarea [(ngModel)]="descripcion" name="descripcion" rows="3"></textarea>
-  </label>
-
-  <label>
-    Precio base (Q)
-    <input type="number" step="0.01" [(ngModel)]="precioBase" name="precioBase" />
-  </label>
-  <label>
-    Género
-    <select [(ngModel)]="genero" name="genero">
-      <option value="UNISEX">Unisex</option>
-      <option value="MASCULINO">Masculino</option>
-      <option value="FEMENINO">Femenino</option>
-    </select>
-  </label>
-
-  <div class="deportes-selector">
-    <span class="label-grupo">Deportes (puedes elegir varios)</span>
-    <div class="chips">
-      @for (d of deportesDisponibles(); track d.id) {
-        <button
-          type="button"
-          class="chip"
-          [class.chip--activo]="deportesSeleccionados.has(d.id)"
-          (click)="toggleDeporte(d.id)">
-          {{ d.nombre }}
-        </button>
-      }
+  @if (error()) {
+    <div class="bg-red-950/50 text-red-400 p-4 mb-8 text-sm font-medium border border-red-900/50 text-center rounded-md">
+      {{ error() }}
     </div>
-  </div>
+  }
 
-  <button class="btn-primario" [disabled]="guardando()" (click)="guardarDatosBasicos()">
-    {{ guardando() ? 'Guardando...' : (esEdicion ? 'Guardar cambios' : 'Crear producto') }}
-  </button>
-</section>
+  <!-- SECCIÓN: Datos básicos -->
+  <section class="bg-zinc-900 border border-zinc-800 p-8 rounded-xl shadow-2xl mb-8">
+    <h2 class="text-xl font-bold uppercase text-white mb-6 tracking-wide">Datos básicos</h2>
 
-@if (esEdicion && prendaActual(); as prenda) {
+    <div class="flex flex-col gap-5">
+      <label class="flex flex-col gap-2 text-xs font-bold text-zinc-400 uppercase tracking-wider">
+        Nombre
+        <input type="text" [(ngModel)]="nombre" name="nombre"
+               class="w-full border border-zinc-700 bg-zinc-950 text-white p-3 rounded-md focus:outline-none focus:border-white transition-all font-normal normal-case" />
+      </label>
 
-  <section class="tarjeta-form">
-    <h2>Colores de este producto</h2>
+      <label class="flex flex-col gap-2 text-xs font-bold text-zinc-400 uppercase tracking-wider">
+        Descripción
+        <textarea [(ngModel)]="descripcion" name="descripcion" rows="3"
+                  class="w-full border border-zinc-700 bg-zinc-950 text-white p-3 rounded-md focus:outline-none focus:border-white transition-all font-normal normal-case resize-none"></textarea>
+      </label>
 
-    @if (prenda.colores.length === 0) {
-      <p class="estado">Todavía no tiene colores agregados.</p>
-    }
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <label class="flex flex-col gap-2 text-xs font-bold text-zinc-400 uppercase tracking-wider">
+          Precio base (Q)
+          <input type="number" step="0.01" [(ngModel)]="precioBase" name="precioBase"
+                 class="w-full border border-zinc-700 bg-zinc-950 text-white p-3 rounded-md focus:outline-none focus:border-white transition-all" />
+        </label>
 
-    @for (color of prenda.colores; track color.id) {
-      <div class="color-existente">
-        <strong>{{ color.color }}</strong>
-        <span class="estado">{{ color.imagenes.length }} imagen(es) · {{ color.variantes.length }} talla(s)</span>
-        <div class="tallas-lista">
-          @for (v of color.variantes; track v.id) {
-            <span class="badge">{{ v.talla }}: {{ v.stock }}</span>
+        <label class="flex flex-col gap-2 text-xs font-bold text-zinc-400 uppercase tracking-wider">
+          Género
+          <select [(ngModel)]="genero" name="genero"
+                  class="w-full border border-zinc-700 bg-zinc-950 text-white p-3 rounded-md focus:outline-none focus:border-white transition-all">
+            <option value="UNISEX">Unisex</option>
+            <option value="MASCULINO">Masculino</option>
+            <option value="FEMENINO">Femenino</option>
+          </select>
+        </label>
+      </div>
+
+      <!-- Selector de Deportes (Chips) -->
+      <div class="flex flex-col gap-2 mt-2">
+        <span class="text-xs font-bold text-zinc-400 uppercase tracking-wider">Deportes (puedes elegir varios)</span>
+        <div class="flex flex-wrap gap-2 mt-1">
+          @for (d of deportesDisponibles(); track d.id) {
+            <button
+              type="button"
+              class="px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-md border transition-all cursor-pointer"
+              [class.bg-white]="deportesSeleccionados.has(d.id)"
+              [class.text-black]="deportesSeleccionados.has(d.id)"
+              [class.border-white]="deportesSeleccionados.has(d.id)"
+              [class.bg-zinc-950]="!deportesSeleccionados.has(d.id)"
+              [class.text-zinc-400]="!deportesSeleccionados.has(d.id)"
+              [class.border-zinc-700]="!deportesSeleccionados.has(d.id)"
+              [class.hover:border-zinc-500]="!deportesSeleccionados.has(d.id)"
+              (click)="toggleDeporte(d.id)">
+              {{ d.nombre }}
+            </button>
           }
         </div>
       </div>
-    }
+
+      <button class="w-full bg-white text-black font-bold uppercase tracking-widest py-4 mt-4 rounded-md hover:bg-zinc-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              [disabled]="guardando()" (click)="guardarDatosBasicos()">
+        {{ guardando() ? 'Guardando...' : (esEdicion ? 'Guardar cambios' : 'Crear producto') }}
+      </button>
+    </div>
   </section>
 
-  <section class="tarjeta-form">
-    <h2>Agregar nuevo color</h2>
+  @if (esEdicion && prendaActual(); as prenda) {
 
-    <label>
-      Nombre del color
-      <input type="text" [(ngModel)]="nuevoColor" name="nuevoColor" placeholder="Ej. Azul" />
-    </label>
-    <label>
-      Fotos del producto (puedes elegir varias)
-      <input
-        type="file"
-        accept="image/*"
-        multiple
-        (change)="onArchivosSeleccionados($event)" />
-      @if (archivosSeleccionados.length > 0) {
-        <span class="estado">{{ archivosSeleccionados.length }} imagen(es) seleccionada(s)</span>
+    <!-- SECCIÓN: Colores existentes -->
+    <section class="bg-zinc-900 border border-zinc-800 p-8 rounded-xl shadow-2xl mb-8">
+      <h2 class="text-xl font-bold uppercase text-white mb-6 tracking-wide">Colores de este producto</h2>
+
+      @if (prenda.colores.length === 0) {
+        <p class="text-zinc-500 italic">Todavía no tiene colores agregados.</p>
       }
-    </label>
 
-    <span class="label-grupo">Tallas y stock</span>
-    @for (t of nuevasTallas; track $index) {
-      <div class="fila-talla">
-        <input type="text" [(ngModel)]="t.talla" [name]="'talla' + $index" placeholder="Talla (S, M, L)" />
-        <input type="number" [(ngModel)]="t.stock" [name]="'stock' + $index" placeholder="Stock" />
-        <input type="text" [(ngModel)]="t.sku" [name]="'sku' + $index" placeholder="SKU (opcional)" />
-        <button type="button" class="btn-quitar" (click)="quitarTalla($index)">×</button>
+      <div class="flex flex-col gap-4">
+        @for (color of prenda.colores; track color.id) {
+          <div class="bg-zinc-950 border border-zinc-800 p-4 rounded-lg flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div>
+              <strong class="text-white uppercase tracking-wider text-sm">{{ color.color }}</strong>
+              <p class="text-xs text-zinc-400 mt-1">{{ color.imagenes.length }} imagen(es) · {{ color.variantes.length }} talla(s)</p>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              @for (v of color.variantes; track v.id) {
+                <span class="px-2.5 py-1 bg-zinc-900 text-zinc-300 border border-zinc-700 rounded text-xs font-mono font-bold">
+                  {{ v.talla }}: <span class="text-white">{{ v.stock }}</span>
+                </span>
+              }
+            </div>
+          </div>
+        }
       </div>
-    }
-    <button type="button" class="btn-secundario" (click)="agregarTallaAlFormulario()">+ Agregar talla</button>
+    </section>
 
-    <button class="btn-primario" [disabled]="subiendoImagenes()" (click)="agregarColor()">
-      {{ subiendoImagenes() ? 'Subiendo imágenes...' : 'Guardar color' }}
-    </button>
-  </section>
-}
+    <!-- SECCIÓN: Agregar nuevo color -->
+    <section class="bg-zinc-900 border border-zinc-800 p-8 rounded-xl shadow-2xl">
+      <h2 class="text-xl font-bold uppercase text-white mb-6 tracking-wide">Agregar nuevo color</h2>
+
+      <div class="flex flex-col gap-5">
+        <label class="flex flex-col gap-2 text-xs font-bold text-zinc-400 uppercase tracking-wider">
+          Nombre del color
+          <input type="text" [(ngModel)]="nuevoColor" name="nuevoColor" placeholder="Ej. Azul"
+                 class="w-full border border-zinc-700 bg-zinc-950 text-white placeholder-zinc-600 p-3 rounded-md focus:outline-none focus:border-white transition-all font-normal normal-case" />
+        </label>
+
+        <label class="flex flex-col gap-2 text-xs font-bold text-zinc-400 uppercase tracking-wider">
+          Fotos del producto (puedes elegir varias)
+          <input
+            type="file"
+            accept="image/*"
+            multiple
+            (change)="onArchivosSeleccionados($event)"
+            class="w-full border border-zinc-700 bg-zinc-950 text-zinc-300 p-3 rounded-md file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-xs file:font-bold file:bg-zinc-800 file:text-white hover:file:bg-zinc-700 cursor-pointer" />
+          @if (archivosSeleccionados.length > 0) {
+            <span class="text-xs text-green-400 font-medium mt-1">{{ archivosSeleccionados.length }} imagen(es) seleccionada(s)</span>
+          }
+        </label>
+
+        <div class="flex flex-col gap-3 mt-2">
+          <span class="text-xs font-bold text-zinc-400 uppercase tracking-wider">Tallas y stock</span>
+
+          @for (t of nuevasTallas; track $index) {
+            <div class="grid grid-cols-1 sm:grid-cols-[1fr_1fr_1.5fr_auto] gap-2 items-center bg-zinc-950 p-3 rounded-lg border border-zinc-800">
+              <input type="text" [(ngModel)]="t.talla" [name]="'talla' + $index" placeholder="Talla (S, M, L)"
+                     class="border border-zinc-700 bg-zinc-900 text-white p-2.5 rounded text-sm focus:outline-none focus:border-white" />
+              <input type="number" [(ngModel)]="t.stock" [name]="'stock' + $index" placeholder="Stock"
+                     class="border border-zinc-700 bg-zinc-900 text-white p-2.5 rounded text-sm focus:outline-none focus:border-white" />
+              <input type="text" [(ngModel)]="t.sku" [name]="'sku' + $index" placeholder="SKU (opcional)"
+                     class="border border-zinc-700 bg-zinc-900 text-white p-2.5 rounded text-sm focus:outline-none focus:border-white" />
+              <button type="button" class="bg-red-950 text-red-400 border border-red-800 w-10 h-10 rounded flex items-center justify-center font-bold text-lg hover:bg-red-900 transition-colors justify-self-end sm:justify-self-center" (click)="quitarTalla($index)">×</button>
+            </div>
+          }
+        </div>
+
+        <button type="button" class="bg-transparent border border-zinc-700 text-zinc-300 py-3 font-bold uppercase tracking-widest text-xs rounded-md hover:bg-zinc-800 hover:text-white transition-colors" (click)="agregarTallaAlFormulario()">
+          + Agregar talla
+        </button>
+
+        <button class="w-full bg-white text-black font-bold uppercase tracking-widest py-4 mt-2 rounded-md hover:bg-zinc-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                [disabled]="subiendoImagenes()" (click)="agregarColor()">
+          {{ subiendoImagenes() ? 'Subiendo imágenes...' : 'Guardar color' }}
+        </button>
+      </div>
+    </section>
+  }
+
+</div>

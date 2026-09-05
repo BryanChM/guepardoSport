@@ -1,0 +1,16 @@
+.confirmacion {
+  text-align: center;
+  padding: 60px 0;
+  max-width: 400px;
+  margin: 0 auto;
+
+  h1 {
+    font-family: var(--font-display);
+    font-size: 28px;
+    text-transform: uppercase;
+    margin: 16px 0 24px;
+  }
+
+  p { margin-bottom: 8px; color: var(--ink-soft); }
+  .nota { font-size: 13px; margin: 16px 0 24px; }
+}

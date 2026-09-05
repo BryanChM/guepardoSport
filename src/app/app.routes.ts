@@ -18,6 +18,8 @@ import { Carrito } from './features/carrito/carrito';
 import { Checkout } from './features/checkout/checkout';
 import { RecuperarPassword } from './features/recuperar-password/recuperar-password';
 import { RestablecerPassword } from './features/restablecer-password/restablecer-password';
+import { CheckoutExito } from './features/checkout-exito/checkout-exito';
+import { CheckoutCancelado } from './features/checkout-cancelado/checkout-cancelado';
 export const routes: Routes = [
   { path: '', component: Catalogo },
   { path: 'categoria/:nombre', component: Categoria },
@@ -39,4 +41,6 @@ export const routes: Routes = [
   { path: 'checkout', component: Checkout },
   { path: 'recuperar-password', component: RecuperarPassword },
   { path: 'restablecer-password', component: RestablecerPassword },
+  { path: 'checkout/exito', component: CheckoutExito },
+  { path: 'checkout/cancelado', component: CheckoutCancelado },
 ];

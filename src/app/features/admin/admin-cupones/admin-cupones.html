@@ -1,74 +1,134 @@
-<app-admin-nav></app-admin-nav>
-
-<div class="admin-header">
-  <h1>Cupones</h1>
-  <button class="btn-primario" (click)="nuevoNuevo()">+ Nuevo cupón</button>
+<div class="flex justify-between items-center mb-10 max-w-6xl mx-auto">
+  <h1 class="text-4xl font-bold uppercase text-white tracking-tight">Cupones</h1>
+  <div class="flex items-center gap-6">
+    <app-admin-nav></app-admin-nav>
+    <button class="bg-white text-black px-6 py-3 text-sm font-bold uppercase tracking-wider rounded-md hover:bg-zinc-200 transition-colors shadow-lg" (click)="nuevoNuevo()">+ Nuevo cupón</button>
+  </div>
 </div>
 
-@if (mostrarForm()) {
-  <section class="tarjeta-form">
-    <h2>{{ editandoId ? 'Editar cupón' : 'Nuevo cupón' }}</h2>
+<div class="max-w-6xl mx-auto">
 
-    @if (error()) { <p class="error">{{ error() }}</p> }
+  @if (mostrarForm()) {
+    <section class="bg-zinc-900 border border-zinc-800 p-8 rounded-xl shadow-2xl mb-10">
+      <h2 class="text-xl font-bold uppercase text-white mb-6 tracking-wide">{{ editandoId ? 'Editar cupón' : 'Nuevo cupón' }}</h2>
 
-    <label>Código <input type="text" [(ngModel)]="form.codigo" name="codigo" placeholder="VERANO20" /></label>
+      @if (error()) {
+        <div class="bg-red-950/50 text-red-400 p-3 mb-6 text-sm font-medium border border-red-900/50 text-center rounded-md">
+          {{ error() }}
+        </div>
+      }
 
-    <div class="fila-form">
-      <label>
-        Tipo de descuento
-        <select [(ngModel)]="form.tipoDescuento" name="tipoDescuento">
-          <option value="PORCENTAJE">Porcentaje</option>
-          <option value="MONTO_FIJO">Monto fijo</option>
-        </select>
-      </label>
-      <label>Valor <input type="number" step="0.01" [(ngModel)]="form.valor" name="valor" /></label>
+      <div class="flex flex-col gap-5">
+        <label class="flex flex-col gap-2 text-xs font-bold text-zinc-400 uppercase tracking-wider">
+          Código
+          <input type="text" [(ngModel)]="form.codigo" name="codigo" placeholder="VERANO20"
+                 class="w-full border border-zinc-700 bg-zinc-950 text-white placeholder-zinc-600 p-3 rounded-md focus:outline-none focus:border-white transition-all font-normal normal-case" />
+        </label>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <label class="flex flex-col gap-2 text-xs font-bold text-zinc-400 uppercase tracking-wider">
+            Tipo de descuento
+            <select [(ngModel)]="form.tipoDescuento" name="tipoDescuento"
+                    class="w-full border border-zinc-700 bg-zinc-950 text-white p-3 rounded-md focus:outline-none focus:border-white transition-all">
+              <option value="PORCENTAJE">Porcentaje</option>
+              <option value="MONTO_FIJO">Monto fijo</option>
+            </select>
+          </label>
+          <label class="flex flex-col gap-2 text-xs font-bold text-zinc-400 uppercase tracking-wider">
+            Valor
+            <input type="number" step="0.01" [(ngModel)]="form.valor" name="valor"
+                   class="w-full border border-zinc-700 bg-zinc-950 text-white p-3 rounded-md focus:outline-none focus:border-white transition-all" />
+          </label>
+        </div>
+
+        <label class="flex flex-col gap-2 text-xs font-bold text-zinc-400 uppercase tracking-wider">
+          Monto mínimo de compra (opcional)
+          <input type="number" step="0.01" [(ngModel)]="form.montoMinimo" name="montoMinimo"
+                 class="w-full border border-zinc-700 bg-zinc-950 text-white p-3 rounded-md focus:outline-none focus:border-white transition-all" />
+        </label>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <label class="flex flex-col gap-2 text-xs font-bold text-zinc-400 uppercase tracking-wider">
+            Fecha inicio
+            <input type="date" [(ngModel)]="form.fechaInicio" name="fechaInicio"
+                   class="w-full border border-zinc-700 bg-zinc-950 text-white p-3 rounded-md focus:outline-none focus:border-white transition-all" />
+          </label>
+          <label class="flex flex-col gap-2 text-xs font-bold text-zinc-400 uppercase tracking-wider">
+            Fecha fin
+            <input type="date" [(ngModel)]="form.fechaFin" name="fechaFin"
+                   class="w-full border border-zinc-700 bg-zinc-950 text-white p-3 rounded-md focus:outline-none focus:border-white transition-all" />
+          </label>
+        </div>
+
+        <label class="flex flex-col gap-2 text-xs font-bold text-zinc-400 uppercase tracking-wider">
+          Límite de usos (opcional)
+          <input type="number" [(ngModel)]="form.limiteUso" name="limiteUso"
+                 class="w-full border border-zinc-700 bg-zinc-950 text-white p-3 rounded-md focus:outline-none focus:border-white transition-all" />
+        </label>
+
+        <label class="flex items-center gap-3 text-xs font-bold text-zinc-300 uppercase tracking-wider cursor-pointer pt-2">
+          <input type="checkbox" [(ngModel)]="form.activo" name="activo"
+                 class="w-4 h-4 rounded border-zinc-700 bg-zinc-950 text-white focus:ring-0 cursor-pointer" />
+          Activo
+        </label>
+
+        <div class="flex gap-4 pt-4 border-t border-zinc-800">
+          <button class="bg-white text-black px-8 py-3 font-bold uppercase tracking-widest rounded-md hover:bg-zinc-200 transition-colors" (click)="guardar()">Guardar</button>
+          <button class="bg-transparent border border-zinc-700 text-zinc-300 px-6 py-3 font-bold uppercase tracking-widest rounded-md hover:bg-zinc-800 hover:text-white transition-colors" (click)="cancelar()">Cancelar</button>
+        </div>
+      </div>
+    </section>
+  }
+
+  @if (cargando()) {
+    <p class="text-zinc-500 py-4 text-center font-medium animate-pulse">Cargando...</p>
+  }
+
+  @if (!cargando() && cupones().length > 0) {
+    <div class="bg-zinc-900 shadow-2xl border border-zinc-800 rounded-xl overflow-hidden">
+      <table class="w-full text-left border-collapse">
+        <thead class="bg-zinc-950/50 border-b border-zinc-800">
+        <tr>
+          <th class="px-6 py-5 text-xs font-bold text-zinc-400 uppercase tracking-widest">Código</th>
+          <th class="px-6 py-5 text-xs font-bold text-zinc-400 uppercase tracking-widest">Tipo</th>
+          <th class="px-6 py-5 text-xs font-bold text-zinc-400 uppercase tracking-widest">Valor</th>
+          <th class="px-6 py-5 text-xs font-bold text-zinc-400 uppercase tracking-widest">Vigencia</th>
+          <th class="px-6 py-5 text-xs font-bold text-zinc-400 uppercase tracking-widest">Usos</th>
+          <th class="px-6 py-5 text-xs font-bold text-zinc-400 uppercase tracking-widest">Estado</th>
+          <th class="px-6 py-5 text-xs font-bold text-zinc-400 uppercase tracking-widest text-right">Acciones</th>
+        </tr>
+        </thead>
+        <tbody class="divide-y divide-zinc-800">
+          @for (c of cupones(); track c.id) {
+            <tr class="hover:bg-zinc-800/50 transition-colors group">
+              <td class="px-6 py-4 text-sm font-mono font-bold text-white tracking-wider">{{ c.codigo }}</td>
+              <td class="px-6 py-4 text-sm text-zinc-300">{{ c.tipoDescuento === 'PORCENTAJE' ? 'Porcentaje' : 'Monto fijo' }}</td>
+              <td class="px-6 py-4 text-sm font-mono font-bold text-white">{{ c.tipoDescuento === 'PORCENTAJE' ? c.valor + '%' : 'Q' + c.valor }}</td>
+              <td class="px-6 py-4 text-sm text-zinc-400">{{ c.fechaInicio }} → {{ c.fechaFin }}</td>
+              <td class="px-6 py-4 text-sm text-zinc-400 font-mono">{{ c.usosActuales }}{{ c.limiteUso ? ' / ' + c.limiteUso : '' }}</td>
+              <td class="px-6 py-4">
+                <span class="px-3 py-1 rounded-full text-xs font-bold border uppercase tracking-wider"
+                      [class.bg-green-950]="c.activo" [class.text-green-400]="c.activo" [class.border-green-800]="c.activo"
+                      [class.bg-red-950]="!c.activo" [class.text-red-400]="!c.activo" [class.border-red-800]="!c.activo">
+                  {{ c.activo ? 'Activo' : 'Inactivo' }}
+                </span>
+              </td>
+              <td class="px-6 py-4 flex gap-4 justify-end">
+                <button (click)="editar(c)" class="text-sm font-bold text-zinc-400 hover:text-white transition-colors">Editar</button>
+                <button class="text-sm font-bold text-red-500 hover:text-red-400 transition-colors" (click)="eliminar(c.id, c.codigo)">Eliminar</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
     </div>
+  }
 
-    <label>Monto mínimo de compra (opcional) <input type="number" step="0.01" [(ngModel)]="form.montoMinimo" name="montoMinimo" /></label>
-
-    <div class="fila-form">
-      <label>Fecha inicio <input type="date" [(ngModel)]="form.fechaInicio" name="fechaInicio" /></label>
-      <label>Fecha fin <input type="date" [(ngModel)]="form.fechaFin" name="fechaFin" /></label>
+  @if (!cargando() && cupones().length === 0) {
+    <div class="text-center py-16 bg-zinc-900 rounded-xl border border-zinc-800 shadow-xl">
+      <span class="material-symbols-outlined text-5xl text-zinc-700 mb-4 block">local_offer</span>
+      <p class="text-zinc-400 text-lg">No hay cupones todavía.</p>
     </div>
+  }
 
-    <label>Límite de usos (opcional) <input type="number" [(ngModel)]="form.limiteUso" name="limiteUso" /></label>
-
-    <label class="fila-form" style="grid-template-columns: auto 1fr; align-items: center;">
-      <input type="checkbox" [(ngModel)]="form.activo" name="activo" style="width:auto;" />
-      Activo
-    </label>
-
-    <div class="acciones">
-      <button class="btn-primario" (click)="guardar()">Guardar</button>
-      <button class="btn-secundario" (click)="cancelar()">Cancelar</button>
-    </div>
-  </section>
-}
-
-@if (cargando()) { <p class="estado">Cargando...</p> }
-
-<table class="tabla" *ngIf="!cargando()">
-  <thead>
-  <tr>
-    <th>Código</th><th>Tipo</th><th>Valor</th><th>Vigencia</th><th>Usos</th><th>Estado</th><th></th>
-  </tr>
-  </thead>
-  <tbody>
-    @for (c of cupones(); track c.id) {
-      <tr>
-        <td class="mono">{{ c.codigo }}</td>
-        <td>{{ c.tipoDescuento === 'PORCENTAJE' ? 'Porcentaje' : 'Monto fijo' }}</td>
-        <td class="mono">{{ c.tipoDescuento === 'PORCENTAJE' ? c.valor + '%' : 'Q' + c.valor }}</td>
-        <td>{{ c.fechaInicio }} → {{ c.fechaFin }}</td>
-        <td>{{ c.usosActuales }}{{ c.limiteUso ? ' / ' + c.limiteUso : '' }}</td>
-        <td><span class="badge" [class.badge--pagado]="c.activo" [class.badge--cancelado]="!c.activo">{{ c.activo ? 'Activo' : 'Inactivo' }}</span></td>
-        <td class="acciones">
-          <button (click)="editar(c)">Editar</button>
-          <button class="peligro" (click)="eliminar(c.id, c.codigo)">Eliminar</button>
-        </td>
-      </tr>
-    }
-  </tbody>
-</table>
-
-@if (!cargando() && cupones().length === 0) { <p class="estado">No hay cupones todavía.</p> }
+</div>
